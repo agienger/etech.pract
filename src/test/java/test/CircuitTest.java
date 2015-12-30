@@ -17,7 +17,7 @@ public class CircuitTest {
 	@Test
 	public void test() throws URISyntaxException {
 		File circuitFile = new File(ClassLoader.getSystemResource(
-				"exampleFiles/beispiel1o.cir").toURI());
+				"circuits/beispiel1o.cir").toURI());
 		new Circuit(circuitFile);
 		ArrayList<Signal> signalList = Circuit.getSignalList();
 		assertEquals(8, signalList.size());

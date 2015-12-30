@@ -14,9 +14,14 @@ import event.EventQueue;
 import event.Signal;
 import event.SignalKind;
 import event.SignalList;
+import file.SolutionFile;
 import gatter.Gatter;
 
 public class DateiSimulator {
+
+	private static final boolean OUTPUT = false;
+
+	private static final boolean VERIFY = true;
 
 	// EventQueue fuer diesen Simulator, wird im Konstruktor initialisiert
 	private EventQueue queue;
@@ -64,7 +69,9 @@ public class DateiSimulator {
 				firstOutputLine += signal.getName() + "\t";
 			}
 		}
-		System.out.println(firstOutputLine);
+		if (OUTPUT) {
+			System.out.println(firstOutputLine);
+		}
 		SignalList.logState(Circuit.getSignalList(), 0);
 
 	}
@@ -119,8 +126,19 @@ public class DateiSimulator {
 	static public void main(String[] args) throws FileNotFoundException,
 			URISyntaxException {
 
-		String circuitFileName = "exampleFiles/beispiel1o.cir";
-		String eventFileName = "exampleFiles/beispiel1o.events";
+	String testFall = "beispiel1o2";
+//		String testFall = "beispiel-latch";
+
+		String circuitFileName = "circuits/" + testFall + ".cir";
+		String eventFileName = "events/"+ "beispiel1o" +".events";
+		File solutionFile = null;
+		ArrayList<String[]> solRows = null;
+		if (VERIFY) {
+			solutionFile = new File(ClassLoader.getSystemResource(
+					"solutions/"+ testFall +".erg").toURI());
+			solRows = SolutionFile.getSolutionRowsnFromFile(solutionFile);
+		}
+
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				circuitFileName).toURI());
 		File eventFile = new File(ClassLoader.getSystemResource(eventFileName)
@@ -130,16 +148,33 @@ public class DateiSimulator {
 
 		t.simulate();
 
-		ArrayList<Integer> times = new ArrayList<Integer>(SignalList.solutionMap.keySet());
+		ArrayList<Integer> times = new ArrayList<Integer>(
+				SignalList.solutionMap.keySet());
 		Collections.sort(times);
+		int counter = 0;
 		for (int time : times) {
+
 			String solution = time + "\t";
 			for (String value : SignalList.solutionMap.get(time)) {
 				solution += value + "\t";
 			}
-			System.out.println(solution);
+			if (OUTPUT) {
+				System.out.println(solution);
+			}
+			if (VERIFY) {
+				ArrayList<String> values = SignalList.solutionMap.get(time);
+				for (int i = 0; i < values.size(); i++) {
+					org.junit.Assert.assertEquals("Fehler in " + (counter + 1)
+							+ ".ten Zeile und " + (i + 1) + ".ten Spalte.",
+							values.get(i), solRows.get(counter)[i + 1]);
+				}
+			}
+			counter++;
+		}
+		if (VERIFY) {
+			System.out.println("Test für Schaltung " + testFall
+					+ " war erfolgreich :-)");
 		}
 
 	}
-
 }

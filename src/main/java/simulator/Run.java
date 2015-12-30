@@ -48,7 +48,7 @@ public class Run {
 			if (fullTimingSimulatorParam.equals(args[0])) {
 				FullTimingSimulator.run(testFall, logToSystemOut);
 			} else if (dateiSimulatorParam.equals(args[0])) {
-DateiSimulator.run();
+//DateiSimulator.run();
 			} else {
 				logErrorMessage(wrongSimulatorMessage);
 			}

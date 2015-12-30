@@ -25,13 +25,17 @@ public class SolutionFile {
 		return list;
 	}
 
-	private ArrayList<String[]> readSolutionFromFile(String fileName) {
-		DateiLeser fileReader = new DateiLeser(fileName);
+	public static ArrayList<String[]> getSolutionRowsnFromFile(File file) {
+		DateiLeser fileReader = new DateiLeser(file.getPath());
 		ArrayList<String[]> solRows = new ArrayList<String[]>();
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile().trim();
-
-			if (!line.startsWith("Zeit") || Character.isDigit(line.charAt(0))) {
+			if (line.length() == 0) {
+				continue;
+			}
+			char c = line.charAt(0);
+			boolean isDigit = (c >= '0' && c <= '9');
+			if (!isDigit) {
 				continue;
 			} else {
 				String[] outputs = line.split("\\s+");
