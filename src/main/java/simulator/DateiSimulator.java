@@ -19,7 +19,7 @@ import gatter.Gatter;
 
 public class DateiSimulator {
 
-	private static final boolean OUTPUT = false;
+	private static final boolean OUTPUT = true;
 
 	private static final boolean VERIFY = true;
 
@@ -58,6 +58,9 @@ public class DateiSimulator {
 		for (Signal signal : Circuit.getSignalList()) {
 			if (signal.getSignalKind().equals(SignalKind.INPUT)) {
 				signal.setValue(false);
+				if (signal.getName().equals("nichtreset")) {
+					signal.setValue(true);
+				}
 			}
 		}
 		String firstOutputLine = "Zeit \t";
@@ -126,16 +129,16 @@ public class DateiSimulator {
 	static public void main(String[] args) throws FileNotFoundException,
 			URISyntaxException {
 
-	String testFall = "beispiel1o2";
-//		String testFall = "beispiel-latch";
-
+		// String testFall = "beispiel1o2";
+		// String testFall = "beispiel-flipflop";//"beispiel-latch";
+		String testFall = "_blume";
 		String circuitFileName = "circuits/" + testFall + ".cir";
-		String eventFileName = "events/"+ "beispiel1o" +".events";
+		String eventFileName = "events/" + testFall + ".events";
 		File solutionFile = null;
 		ArrayList<String[]> solRows = null;
 		if (VERIFY) {
 			solutionFile = new File(ClassLoader.getSystemResource(
-					"solutions/"+ testFall +".erg").toURI());
+					"solutions/" + testFall + ".erg").toURI());
 			solRows = SolutionFile.getSolutionRowsnFromFile(solutionFile);
 		}
 

@@ -32,7 +32,7 @@ public abstract class Gatter {
 	public static ArrayList<Gatter> globalGatterList = new ArrayList<Gatter>();
 
 	/**
-	 * Konstruktor der Klasse Nand, initialisiert ein Signal Array mit anzahl
+	 * Konstruktor der Klasse Gatter, initialisiert ein Signal Array mit @param anzahl
 	 * Feldern und Wartezeit wTime
 	 * 
 	 * @param anzahl
@@ -67,8 +67,7 @@ public abstract class Gatter {
 	}
 
 	/**
-	 * Berechnet den Wert des Ausgangssignals durch Aufruf der Methode @ref
-	 * calculateNand(). Schreibt die Werte der Endsignale s0 and s1
+	 * Berechnet den Wert des Ausgangssignals 
 	 * 
 	 */
 	public void setOutputValue() {

@@ -2,10 +2,10 @@
 # Diese Schaltung wertet mit digitalen Sensoren
 # die Bodenfeuchtigkeit und Temperatur aus (Signale
 # warm, trocken und sehrtrocken). Es wird auch der
-# Wasserpegel in einem Vorratsbehälter bestimmt (Signale
+# Wasserpegel in einem VorratsbehÃ¤lter bestimmt (Signale
 # wenigwasser und keinwasser). Daraus wird ermittelt,
 # wann gegossen werden muss. Bei Wassermangel wird
-# Alarm ausgelöst. Dieser kann nach dem Auffüllen des
+# Alarm ausgelÃ¶st. Dieser kann nach dem AuffÃ¼llen des
 # Wassers mit nichtreset beendet werden.
 # Das Signal giessen soll nach dem die Signale trocken &
 # warm oder sehrtrocken wieder inaktiv sind noch eine

@@ -1,7 +1,7 @@
 *** Logic Simulator V1.0 ***
 
 CircuitDatei 'beispiel-flipflop.cir' fertig eingelesen
-Schaltung enthält Rückkopplungen : Simulation mit maximal 5000 Gatterausführungen
+Schaltung enthÃ¤lt RÃ¼ckkopplungen : Simulation mit maximal 5000 GatterausfÃ¼hrungen
 Schaltung erzeugt und initialisiert
 EventDatei   'beispiel-flipflop.events' fertig eingelesen
 Simulation fertig

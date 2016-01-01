@@ -1,5 +1,5 @@
 # Ein Beispiel, das einen Zustandsautomaten mit FlipFlops realisiert
-# Der Automat hat 7 Zust‰nde, die der Reihe nach durchlaufen werden
+# Der Automat hat 7 Zust√§nde, die der Reihe nach durchlaufen werden
 
 # Eingaenge der Schaltung
 Input a;
@@ -7,9 +7,9 @@ Input a;
 # Ausgaenge der Schaltung
 Output y0,y1,y2;
 
-# Nicht negierte Ausg‰nge der FlipFlops
+# Nicht negierte Ausg√§nge der FlipFlops
 Signal s0,s1,s2;
-# Negierte Ausg‰nge der FlipFlops
+# Negierte Ausg√§nge der FlipFlops
 Signal ns0,ns1,ns2;
 
 # Signale, die nur innerhalb der Schaltung verwendet werden
