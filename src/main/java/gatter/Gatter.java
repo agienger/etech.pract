@@ -27,7 +27,7 @@ public abstract class Gatter {
 	private Signal output;
 
 	private int waitTime;
-	private boolean lastCalculatedValue = false;
+	protected boolean lastCalculatedValue = false;
 
 	public static ArrayList<Gatter> globalGatterList = new ArrayList<Gatter>();
 

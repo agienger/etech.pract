@@ -21,7 +21,7 @@ public class DateiSimulator {
 
 	private static final boolean OUTPUT = true;
 
-	private static final boolean VERIFY = true;
+	private static final boolean VERIFY = false;
 
 	// EventQueue fuer diesen Simulator, wird im Konstruktor initialisiert
 	private EventQueue queue;
@@ -130,8 +130,8 @@ public class DateiSimulator {
 			URISyntaxException {
 
 		// String testFall = "beispiel1o2";
-		// String testFall = "beispiel-flipflop";//"beispiel-latch";
-		String testFall = "_blume";
+		 String testFall = "beispiel-flipflop";//"beispiel-latch";
+		//String testFall = "_blume";
 		String circuitFileName = "circuits/" + testFall + ".cir";
 		String eventFileName = "events/" + testFall + ".events";
 		File solutionFile = null;

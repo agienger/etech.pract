@@ -128,6 +128,8 @@ public class Circuit {
 		} else if (propertyTlc.equals("d")) {
 			gatter.setInput(1, signal);
 		} else if (propertyTlc.equals("nq")) {
+			FF ff = (FF) gatter;
+			ff.setNegOutput(signal);
 		} else {
 			InvalidParameterException e = new InvalidParameterException();
 			System.out.println("The line " + line + " has an unknown property");
