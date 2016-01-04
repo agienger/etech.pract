@@ -16,7 +16,7 @@ public class SolutionFileTest {
 	public void readSoutionFile() throws URISyntaxException {
 		File solutionFile = new File(ClassLoader.getSystemResource(
 				"solutions/beispiel1o.erg").toURI());
-		ArrayList<String[]> solRows = SolutionFile.getSolutionRowsnFromFile(solutionFile);
+		ArrayList<String[]> solRows = SolutionFile.getSolutionRowsFromFile(solutionFile);
 		assertEquals(12, solRows.size());
 		assertEquals(6, solRows.get(0).length);
 		String[] expectedRow = {"100","0","1","0","1","1"};

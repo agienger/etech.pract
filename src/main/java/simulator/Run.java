@@ -1,12 +1,7 @@
 package simulator;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import event.Signal;
-import file.SolutionFile;
 
 public class Run {
 

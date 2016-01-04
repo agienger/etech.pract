@@ -1,9 +1,10 @@
 package event;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import main.Circuit;
+import file.CircuitState;
+import file.Solution;
 
 public class SignalList {
 	public static Signal getSignalFromList(ArrayList<Signal> signals,
@@ -16,18 +17,19 @@ public class SignalList {
 		return null;
 	}
 
-	public static HashMap<Integer,ArrayList<String>> solutionMap = new HashMap<Integer,ArrayList<String>>();
-	
-	public static void logState(ArrayList<Signal> signals, 	int time) {
+	public static ArrayList<ArrayList<String>> solutionList = new ArrayList<ArrayList<String>>();
+
+	public static void logState(ArrayList<Signal> signals, int time) {
 		ArrayList<String> states = new ArrayList<String>();
 		for (Signal sig : Circuit.getSignalList()) {
 			SignalKind kind = getSignalFromList(signals, sig.getName())
 					.getSignalKind();
-			if (kind.equals(SignalKind.INPUT)
-					|| kind.equals(SignalKind.OUTPUT)) {
+			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));
 			}
 		}
-		solutionMap.put(time, states);
-		}
+		Solution.addSolution(new CircuitState(time, states));
+	}
+	
+	
 }

@@ -15,7 +15,7 @@ public class Exor extends Gatter {
 			}
 		}
 		
-		return (trueCounter %2 == 1);
+		return (trueCounter % 2 != 0);
 	}
 
 }

@@ -1,9 +1,8 @@
 package event;
 
-import java.util.ArrayList;
-
-import main.CircuitOld;
 import gatter.Gatter;
+
+import java.util.ArrayList;
 
 /**
  * Die Klasse Event stellt Events zur Verfügung, die automatisch in eine vorher

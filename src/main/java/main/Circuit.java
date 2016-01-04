@@ -25,9 +25,6 @@ import gatter.Or;
 public class Circuit {
 
 	DateiLeser fileReader;
-	private HashMap<String, Signal> inputs = new HashMap<String, Signal>();
-	private HashMap<String, Signal> outputs = new HashMap<String, Signal>();
-	private HashMap<String, Signal> signals = new HashMap<String, Signal>();
 	private HashMap<String, Gatter> gates = new HashMap<String, Gatter>();
 	private static ArrayList<Signal> signalList;
 
@@ -42,19 +39,14 @@ public class Circuit {
 			if (line.toLowerCase().startsWith("input")) {
 				for (String sigName : getInformationFromLine(line, "Input")) {
 					addtoSignalList(sigName, SignalKind.INPUT);
-					inputs.put(sigName, new Signal(sigName));
-					signals.put(sigName, new Signal(sigName));
 				}
 			} else if (line.toLowerCase().startsWith("output")) {
 				for (String sigName : getInformationFromLine(line, "Output")) {
 					addtoSignalList(sigName, SignalKind.OUTPUT);
-					outputs.put(sigName, new Signal(sigName));
-					signals.put(sigName, new Signal(sigName));
 				}
 			} else if (line.toLowerCase().startsWith("signal")) {
 				for (String sigName : getInformationFromLine(line, "Signal")) {
 					addtoSignalList(sigName, SignalKind.INNER);
-					signals.put(sigName, new Signal(sigName));
 				}
 			} else if (line.toLowerCase().startsWith("gate")) {
 				int numberOfInputs = 0;
@@ -142,20 +134,8 @@ public class Circuit {
 				.replaceAll("\\s", "").split(","));
 	}
 
-	public HashMap<String, Signal> getInputs() {
-		return inputs;
-	}
-
-	public HashMap<String, Signal> getOutputs() {
-		return outputs;
-	}
-
 	public HashMap<String, Gatter> getGates() {
 		return gates;
-	}
-
-	public HashMap<String, Signal> getSignals() {
-		return signals;
 	}
 
 	public static ArrayList<Signal> getSignalList() {

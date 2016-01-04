@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.List;
 
 import main.Circuit;
 import main.EventProvider;
@@ -14,32 +14,18 @@ import event.EventQueue;
 import event.Signal;
 import event.SignalKind;
 import event.SignalList;
+import file.CircuitState;
+import file.Solution;
 import file.SolutionFile;
-import gatter.Gatter;
 
 public class DateiSimulator {
 
-	private static final boolean OUTPUT = true;
+	private static final boolean OUTPUT = false;
+	private static final boolean VERIFY = true;
 
-	private static final boolean VERIFY = false;
-
-	// EventQueue fuer diesen Simulator, wird im Konstruktor initialisiert
+	// EventQueue für diesen Simulator, wird im Konstruktor initialisiert
 	private EventQueue queue;
 
-	public static HashMap<String, Signal> signals;
-	private HashMap<String, Gatter> gates;
-
-	public static HashMap<String, Signal> inputs;
-
-	public static HashMap<String, Signal> outputs;
-
-	/**
-	 * Konstruktor, der die zu simulierende Schaltung aufbaut, den Ruhezustand
-	 * ermittelt und die Eingabe-Events erzeugt. Simuliert wird je nach Argument
-	 * eine der drei vorgegebenen Schaltungen 1 = Einfacher Multiplexer 4 zu 1 2
-	 * = Einfacher synchroner, ruecksetzbarer Zaehler mit 4 Bit 3 = Komplexe
-	 * Schaltung mit einem Zaehler vielen Latches und einigen Multiplexern
-	 */
 	public DateiSimulator(File circuitFile, File eventFile) {
 
 		queue = new EventQueue();
@@ -80,36 +66,13 @@ public class DateiSimulator {
 	}
 
 	private void setInputEvents(File eventFile) {
-		// DateiLeser fileReader = new DateiLeser(eventFile.getPath());
-		//
-		// while (fileReader.nochMehrZeilen()) {
-		// String line = fileReader.gibZeile();
-		// if (line.startsWith("#") || line.replaceAll("\\s","").equals("")) {
-		// continue;
-		// }
-		// String [] eventArray = new String[3];
-		// eventArray = line.split("\\s+");
-		// Signal s = signals.get(eventArray[1]);
-		// int startTime = Integer.parseInt(eventArray[0]);
-		// boolean value = eventArray[2].equals("1") ? true: false;
-		// new Event(s,startTime,value);
-		// }
 		new EventProvider(eventFile, Circuit.getSignalList());
 	}
 
 	private void buildCircuit(File file) {
-		Circuit circuit = new Circuit(file);
-
-		// signals = circuit.getSignals();
-		// inputs = circuit.getInputs();
-		// outputs = circuit.getOutputs();
-		// gates = inputFile.getGates();
+		new Circuit(file);
 	}
 
-	// private void findSteadyState() {
-	// for (Signal inputSignal: inputs.values()) {
-	// inputSignal.setValue(false);
-	// }
 	// }
 
 	/**
@@ -128,56 +91,78 @@ public class DateiSimulator {
 
 	static public void main(String[] args) throws FileNotFoundException,
 			URISyntaxException {
+		
+		
 
-		// String testFall = "beispiel1o2";
-		 String testFall = "beispiel-flipflop";//"beispiel-latch";
-		//String testFall = "_blume";
+		List<String> examples = Arrays.asList( "beispiel1o", "beispiel1o2", "beispiel-latch",
+				"beispiel-latch2", "beispiel-flipflop", "beispiel-flipflop2",
+				"_blume", "_blume2" );
+		if (args[0].toLowerCase().equals("all")) {
+			for (String testFall : examples) {
+				run(testFall);
+			}
+		}
+		else if(examples.contains(args[0])) {
+			run(args[0]);
+		}
+		else {
+			System.out.println("Eingabeparameter muss entweder 'ALL' oder einer der folgenden Beispiele sein:");
+			System.out.println(examples);
+		}
+		
+	}
+
+	private static void run(String testFall) throws URISyntaxException {
 		String circuitFileName = "circuits/" + testFall + ".cir";
-		String eventFileName = "events/" + testFall + ".events";
+		int lastIndex = testFall.lastIndexOf("2");
+		String eventTestFall = testFall;
+		if (testFall.endsWith("2")) {
+			eventTestFall = testFall.substring(0, lastIndex);
+		}
+		String eventFileName = "events/" + eventTestFall + ".events";
 		File solutionFile = null;
 		ArrayList<String[]> solRows = null;
-		if (VERIFY) {
-			solutionFile = new File(ClassLoader.getSystemResource(
-					"solutions/" + testFall + ".erg").toURI());
-			solRows = SolutionFile.getSolutionRowsnFromFile(solutionFile);
-		}
+		Solution.clear();
 
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				circuitFileName).toURI());
-		File eventFile = new File(ClassLoader.getSystemResource(eventFileName)
-				.toURI());
+		File eventFile = new File(ClassLoader.getSystemResource(
+				eventFileName).toURI());
 
 		DateiSimulator t = new DateiSimulator(circuitFile, eventFile);
 
 		t.simulate();
 
-		ArrayList<Integer> times = new ArrayList<Integer>(
-				SignalList.solutionMap.keySet());
-		Collections.sort(times);
 		int counter = 0;
-		for (int time : times) {
-
-			String solution = time + "\t";
-			for (String value : SignalList.solutionMap.get(time)) {
-				solution += value + "\t";
-			}
-			if (OUTPUT) {
-				System.out.println(solution);
-			}
-			if (VERIFY) {
-				ArrayList<String> values = SignalList.solutionMap.get(time);
-				for (int i = 0; i < values.size(); i++) {
-					org.junit.Assert.assertEquals("Fehler in " + (counter + 1)
-							+ ".ten Zeile und " + (i + 1) + ".ten Spalte.",
-							values.get(i), solRows.get(counter)[i + 1]);
+		if (VERIFY) {
+			solutionFile = new File(ClassLoader.getSystemResource(
+					"solutions/" + testFall + ".erg").toURI());
+			solRows = SolutionFile.getSolutionRowsFromFile(solutionFile);
+			org.junit.Assert.assertEquals(
+					"Fehler: unterschiedliche Listgrößen in Testfall "
+							+ testFall, solRows.size(),
+					Solution.solutions.size());
+		}
+		for (CircuitState solution : Solution.solutions) {
+			String solRow = Integer.toString(solution.getTime());
+			org.junit.Assert.assertEquals(solRow, solRows.get(counter)[0]);
+			for (int i = 0; i < solution.getStates().size(); i++) {
+				solRow += "\t" + solution.getStates().get(i);
+				if (VERIFY) {
+					org.junit.Assert.assertEquals("Fehler in "
+							+ (counter + 1) + ".ten Zeile und " + (i + 1)
+							+ ".ten Spalte.", solution.getStates().get(i),
+							solRows.get(counter)[i + 1]);
 				}
 			}
 			counter++;
+			if (OUTPUT) {
+				System.out.println(solRow);
+			}
 		}
 		if (VERIFY) {
 			System.out.println("Test für Schaltung " + testFall
 					+ " war erfolgreich :-)");
 		}
-
 	}
 }

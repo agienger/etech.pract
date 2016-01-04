@@ -7,10 +7,6 @@ import java.util.Scanner;
 
 public class SolutionFile {
 
-	public ArrayList<String> timeList = new ArrayList<String>();;
-	public ArrayList<String> gatterList = new ArrayList<String>();
-	public ArrayList<String> valueList = new ArrayList<String>();
-
 	public SolutionFile(String fileName) throws FileNotFoundException {
 	}
 
@@ -25,7 +21,7 @@ public class SolutionFile {
 		return list;
 	}
 
-	public static ArrayList<String[]> getSolutionRowsnFromFile(File file) {
+	public static ArrayList<String[]> getSolutionRowsFromFile(File file) {
 		DateiLeser fileReader = new DateiLeser(file.getPath());
 		ArrayList<String[]> solRows = new ArrayList<String[]>();
 		while (fileReader.nochMehrZeilen()) {
