@@ -13,7 +13,6 @@ import event.Event;
 import event.EventQueue;
 import event.Signal;
 import event.SignalKind;
-import event.SignalList;
 import file.CircuitState;
 import file.Solution;
 import file.SolutionFile;
@@ -25,6 +24,7 @@ public class DateiSimulator {
 
 	// EventQueue für diesen Simulator, wird im Konstruktor initialisiert
 	private EventQueue queue;
+	public static ArrayList<ArrayList<String>> solutionList = new ArrayList<ArrayList<String>>();
 
 	public DateiSimulator(File circuitFile, File eventFile) {
 
@@ -51,8 +51,7 @@ public class DateiSimulator {
 		}
 		String firstOutputLine = "Zeit \t";
 		for (Signal signal : Signal.getSignalList()) {
-			SignalKind kind = SignalList.getSignalFromList(
-					Signal.getSignalList(), (signal.getName()))
+			SignalKind kind = Signal.getSignalFromList(signal.getName())
 					.getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				firstOutputLine += signal.getName() + "\t";
@@ -61,12 +60,12 @@ public class DateiSimulator {
 		if (OUTPUT) {
 			System.out.println(firstOutputLine);
 		}
-		SignalList.logState(Signal.getSignalList(), 0);
+		DateiSimulator.logCurrentState(0);
 
 	}
 
 	private void setInputEvents(File eventFile) {
-		new EventProvider(eventFile, Signal.getSignalList());
+		new EventProvider(eventFile);
 	}
 
 	private void buildCircuit(File file) {
@@ -87,6 +86,18 @@ public class DateiSimulator {
 			Event e = queue.getFirst();
 			e.propagate();
 		}
+	}
+
+	public static void logCurrentState(int time) {
+		ArrayList<String> states = new ArrayList<String>();
+		for (Signal sig : Signal.getSignalList()) {
+			SignalKind kind = Signal.getSignalFromList(sig.getName())
+					.getSignalKind();
+			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
+				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));
+			}
+		}
+		Solution.addSolution(new CircuitState(time, states));
 	}
 
 	static public void main(String[] args) throws FileNotFoundException,
@@ -123,8 +134,6 @@ public class DateiSimulator {
 		File solutionFile = null;
 		ArrayList<String[]> solRows = null;
 		Solution.clear();
-		Signal.clearSignalList();
-
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				circuitFileName).toURI());
 		File eventFile = new File(ClassLoader.getSystemResource(

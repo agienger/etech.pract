@@ -8,7 +8,6 @@ import java.util.List;
 
 import event.Signal;
 import event.SignalKind;
-import event.SignalList;
 import file.DateiLeser;
 import gatter.And;
 import gatter.Buf;
@@ -27,6 +26,7 @@ public class Circuit {
 	private HashMap<String, Gatter> gates = new HashMap<String, Gatter>();
 
 	public Circuit(File file) {
+		Signal.clearSignalList();
 		fileReader = new DateiLeser(file.getPath());
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile();
@@ -98,7 +98,7 @@ public class Circuit {
 		String sigName = line.replaceAll(regex, "$3");
 
 		Gatter gatter = gates.get(gateName);
-		Signal signal = SignalList.getSignalFromList(Signal.getSignalList(), sigName);
+		Signal signal = Signal.getSignalFromList(sigName);
 		String propertyTlc = property.toLowerCase();
 		if (propertyTlc.equals("o") || propertyTlc.equals("q")) {
 			gatter.setOutput(signal);

@@ -4,7 +4,7 @@ import gatter.Gatter;
 
 import java.util.ArrayList;
 
-import main.Circuit;
+import simulator.DateiSimulator;
 
 /**
  * @author Lion Gienger August 2015
@@ -99,10 +99,9 @@ public class Signal {
 		}
 		int time = Event.getEventQueue().getRunTime();
 		if (time > 0) {
-			SignalKind kind = SignalList.getSignalFromList(signalList,
-					this.getName()).getSignalKind();
+			SignalKind kind = Signal.getSignalFromList(this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				SignalList.logState(signalList, time);
+				DateiSimulator.logCurrentState(time);
 			}
 		}
 	}
@@ -160,6 +159,15 @@ public class Signal {
 
 	public void setSignalKind(SignalKind signalKind) {
 		this.signalKind = signalKind;
+	}
+
+	public static Signal getSignalFromList(String sigName) {
+		for (Signal signal : signalList) {
+			if (signal.getName().equals(sigName)) {
+				return signal;
+			}
+		}
+		return null;
 	}
 
 	public static ArrayList<Signal> getSignalList() {
