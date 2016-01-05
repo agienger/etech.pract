@@ -23,6 +23,8 @@ public class Signal {
 	private SignalKind signalKind;
 	private boolean hasChanged;
 	private boolean previousValue;
+	
+	private static ArrayList<Signal> signalList = new ArrayList<Signal>();
 
 	/**
 	 * Constructor for objects of class Signal
@@ -35,6 +37,12 @@ public class Signal {
 	public Signal(String name) {
 		setName(name);
 		gatterList = new ArrayList<Gatter>();
+		signalList.add(this);
+	}
+	
+	public Signal(String name , SignalKind kind){
+		this(name);
+		setSignalKind(kind);
 	}
 
 	/**
@@ -91,10 +99,10 @@ public class Signal {
 		}
 		int time = Event.getEventQueue().getRunTime();
 		if (time > 0) {
-			SignalKind kind = SignalList.getSignalFromList(Circuit.getSignalList(),
+			SignalKind kind = SignalList.getSignalFromList(signalList,
 					this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				SignalList.logState(Circuit.getSignalList(), time);
+				SignalList.logState(signalList, time);
 			}
 		}
 	}
@@ -152,5 +160,13 @@ public class Signal {
 
 	public void setSignalKind(SignalKind signalKind) {
 		this.signalKind = signalKind;
+	}
+
+	public static ArrayList<Signal> getSignalList() {
+		return signalList;
+	}
+
+	public static void clearSignalList() {
+		signalList.clear();
 	}
 }

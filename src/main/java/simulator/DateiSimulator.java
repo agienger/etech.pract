@@ -41,7 +41,7 @@ public class DateiSimulator {
 	}
 
 	private void findSteadyState() {
-		for (Signal signal : Circuit.getSignalList()) {
+		for (Signal signal : Signal.getSignalList()) {
 			if (signal.getSignalKind().equals(SignalKind.INPUT)) {
 				signal.setValue(false);
 				if (signal.getName().equals("nichtreset")) {
@@ -50,9 +50,9 @@ public class DateiSimulator {
 			}
 		}
 		String firstOutputLine = "Zeit \t";
-		for (Signal signal : Circuit.getSignalList()) {
+		for (Signal signal : Signal.getSignalList()) {
 			SignalKind kind = SignalList.getSignalFromList(
-					Circuit.getSignalList(), (signal.getName()))
+					Signal.getSignalList(), (signal.getName()))
 					.getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				firstOutputLine += signal.getName() + "\t";
@@ -61,12 +61,12 @@ public class DateiSimulator {
 		if (OUTPUT) {
 			System.out.println(firstOutputLine);
 		}
-		SignalList.logState(Circuit.getSignalList(), 0);
+		SignalList.logState(Signal.getSignalList(), 0);
 
 	}
 
 	private void setInputEvents(File eventFile) {
-		new EventProvider(eventFile, Circuit.getSignalList());
+		new EventProvider(eventFile, Signal.getSignalList());
 	}
 
 	private void buildCircuit(File file) {
@@ -123,6 +123,7 @@ public class DateiSimulator {
 		File solutionFile = null;
 		ArrayList<String[]> solRows = null;
 		Solution.clear();
+		Signal.clearSignalList();
 
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				circuitFileName).toURI());

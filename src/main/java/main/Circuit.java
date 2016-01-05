@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +25,9 @@ public class Circuit {
 
 	DateiLeser fileReader;
 	private HashMap<String, Gatter> gates = new HashMap<String, Gatter>();
-	private static ArrayList<Signal> signalList;
 
 	public Circuit(File file) {
 		fileReader = new DateiLeser(file.getPath());
-		signalList = new ArrayList<Signal>();
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile();
 			if (line.startsWith("#") || line.replaceAll("\\s", "").equals("")) {
@@ -38,15 +35,15 @@ public class Circuit {
 			}
 			if (line.toLowerCase().startsWith("input")) {
 				for (String sigName : getInformationFromLine(line, "Input")) {
-					addtoSignalList(sigName, SignalKind.INPUT);
+					new Signal(sigName,SignalKind.INPUT);
 				}
 			} else if (line.toLowerCase().startsWith("output")) {
 				for (String sigName : getInformationFromLine(line, "Output")) {
-					addtoSignalList(sigName, SignalKind.OUTPUT);
+					new Signal(sigName,SignalKind.OUTPUT);
 				}
 			} else if (line.toLowerCase().startsWith("signal")) {
 				for (String sigName : getInformationFromLine(line, "Signal")) {
-					addtoSignalList(sigName, SignalKind.INNER);
+					new Signal(sigName,SignalKind.INNER);
 				}
 			} else if (line.toLowerCase().startsWith("gate")) {
 				int numberOfInputs = 0;
@@ -94,12 +91,6 @@ public class Circuit {
 		}
 	}
 
-	private void addtoSignalList(String sigName, SignalKind kind) {
-		Signal s = new Signal(sigName);
-		s.setSignalKind(kind);
-		signalList.add(s);
-	}
-
 	private void gateDefinition(String line) {
 		String regex = "(\\w+)\\.(\\w+)=(\\w+);";
 		String gateName = line.replaceAll(regex, "$1");
@@ -107,7 +98,7 @@ public class Circuit {
 		String sigName = line.replaceAll(regex, "$3");
 
 		Gatter gatter = gates.get(gateName);
-		Signal signal = SignalList.getSignalFromList(signalList, sigName);
+		Signal signal = SignalList.getSignalFromList(Signal.getSignalList(), sigName);
 		String propertyTlc = property.toLowerCase();
 		if (propertyTlc.equals("o") || propertyTlc.equals("q")) {
 			gatter.setOutput(signal);
@@ -136,10 +127,6 @@ public class Circuit {
 
 	public HashMap<String, Gatter> getGates() {
 		return gates;
-	}
-
-	public static ArrayList<Signal> getSignalList() {
-		return signalList;
 	}
 
 }
