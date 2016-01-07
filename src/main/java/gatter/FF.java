@@ -1,7 +1,7 @@
 package gatter;
 
-import event.Event;
-import event.Signal;
+import circuit.Event;
+import circuit.Signal;
 
 public class FF extends FlipFlop {
 

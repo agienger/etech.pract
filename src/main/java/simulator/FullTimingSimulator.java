@@ -6,10 +6,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import event.Event;
-import event.EventQueue;
-import event.Signal;
-import file.SolutionFile;
+import verify.SolutionFile;
+import circuit.Event;
+import circuit.EventQueue;
+import circuit.Signal;
 import gatter.And;
 import gatter.Buf;
 import gatter.Exor;

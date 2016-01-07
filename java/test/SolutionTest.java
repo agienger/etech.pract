@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import file.CircuitState;
-import file.Solution;
+import verify.Solution;
+import circuit.CircuitState;
 
 public class SolutionTest {
 	

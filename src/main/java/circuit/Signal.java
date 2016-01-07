@@ -1,10 +1,9 @@
-package event;
+package circuit;
 
 import gatter.Gatter;
 
 import java.util.ArrayList;
 
-import main.Circuit;
 import simulator.DateiSimulator;
 
 /**
@@ -97,7 +96,7 @@ public class Signal {
 		}
 		int time = Event.getEventQueue().getRunTime();
 		if (time > 0) {
-			SignalKind kind = SignalListe.getSignalFromList(Circuit.getSignalList(),this.getName()).getSignalKind();
+			SignalKind kind = Signal.getSignalFromList(Circuit.getSignalList(),this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				DateiSimulator.logCurrentState(time);
 			}
@@ -157,6 +156,15 @@ public class Signal {
 
 	public void setSignalKind(SignalKind signalKind) {
 		this.signalKind = signalKind;
+	}
+
+	public static Signal getSignalFromList(ArrayList<Signal> signalList, String sigName) {
+		for (Signal signal : signalList) {
+			if (signal.getName().equals(sigName)) {
+				return signal;
+			}
+		}
+		return null;
 	}
 	
 

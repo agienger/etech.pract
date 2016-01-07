@@ -1,9 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import event.Event;
-import event.EventQueue;
-import event.Signal;
 import gatter.And;
 
 import java.util.Arrays;
@@ -13,6 +10,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
+
+import circuit.Event;
+import circuit.EventQueue;
+import circuit.Signal;
 
 @RunWith(Parameterized.class)
 public class AndTest {

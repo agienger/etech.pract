@@ -1,12 +1,8 @@
-package main;
+package circuit;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import event.Event;
-import event.EventQueue;
-import event.Signal;
-import event.SignalListe;
 import file.DateiLeser;
 
 public class EventProvider {
@@ -20,7 +16,7 @@ public class EventProvider {
 				continue;
 			} else {
 				String[] eventData = line.split("\\s+");
-				new Event(SignalListe.getSignalFromList(signalList,eventData[1]), Integer.parseInt(eventData[0]),
+				new Event(Signal.getSignalFromList(signalList,eventData[1]), Integer.parseInt(eventData[0]),
 						toBoolean(eventData[2]));
 			}
 		}

@@ -1,4 +1,4 @@
-package main;
+package circuit;
 
 import java.io.File;
 import java.security.InvalidParameterException;
@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import event.Signal;
-import event.SignalKind;
 import file.DateiLeser;
 import gatter.And;
 import gatter.Buf;

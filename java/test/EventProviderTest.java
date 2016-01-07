@@ -6,13 +6,12 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import main.EventProvider;
-
 import org.junit.Test;
 
-import event.Event;
-import event.EventQueue;
-import event.Signal;
+import circuit.Event;
+import circuit.EventProvider;
+import circuit.EventQueue;
+import circuit.Signal;
 
 public class EventProviderTest {
 

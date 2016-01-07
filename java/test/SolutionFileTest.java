@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import file.SolutionFile;
+import verify.SolutionFile;
 
 public class SolutionFileTest {
 

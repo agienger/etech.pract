@@ -1,9 +1,11 @@
-package file;
+package verify;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import file.DateiLeser;
 
 public class SolutionFile {
 

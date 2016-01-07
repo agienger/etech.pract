@@ -2,8 +2,8 @@ package gatter;
 
 import java.util.ArrayList;
 
-import event.Event;
-import event.Signal;
+import circuit.Event;
+import circuit.Signal;
 
 /**
  * Basisklasse Gatter

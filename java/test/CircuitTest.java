@@ -6,12 +6,11 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import main.Circuit;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import event.Signal;
+import circuit.Circuit;
+import circuit.Signal;
 
 public class CircuitTest {
 	ArrayList<Signal> signalList;

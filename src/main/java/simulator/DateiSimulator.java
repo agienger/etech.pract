@@ -7,16 +7,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import main.Circuit;
-import main.EventProvider;
-import event.Event;
-import event.EventQueue;
-import event.Signal;
-import event.SignalKind;
-import event.SignalListe;
-import file.CircuitState;
-import file.Solution;
-import file.SolutionFile;
+import verify.Solution;
+import verify.SolutionFile;
+import circuit.Circuit;
+import circuit.CircuitState;
+import circuit.Event;
+import circuit.EventProvider;
+import circuit.EventQueue;
+import circuit.Signal;
+import circuit.SignalKind;
 
 public class DateiSimulator {
 
@@ -60,7 +59,7 @@ public class DateiSimulator {
 		if (output()) {
 			String firstOutputLine = "Zeit \t";
 			for (Signal signal : signalList) {
-				SignalKind kind = SignalListe.getSignalFromList(signalList,
+				SignalKind kind = Signal.getSignalFromList(signalList,
 						signal.getName()).getSignalKind();
 				if (kind.equals(SignalKind.INPUT)
 						|| kind.equals(SignalKind.OUTPUT)) {
@@ -98,7 +97,7 @@ public class DateiSimulator {
 	public static void logCurrentState(int time) {
 		ArrayList<String> states = new ArrayList<String>();
 		for (Signal sig : signalList) {
-			SignalKind kind = SignalListe.getSignalFromList(signalList,
+			SignalKind kind = Signal.getSignalFromList(signalList,
 					sig.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));

@@ -1,4 +1,4 @@
-package event;
+package circuit;
 
 import gatter.Gatter;
 

@@ -8,9 +8,9 @@ import java.util.ListIterator;
 import org.junit.Before;
 import org.junit.Test;
 
-import event.Event;
-import event.EventQueue;
-import event.Signal;
+import circuit.Event;
+import circuit.EventQueue;
+import circuit.Signal;
 
 public class EventQueueTest {
 

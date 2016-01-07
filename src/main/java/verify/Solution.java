@@ -1,6 +1,8 @@
-package file;
+package verify;
 
 import java.util.ArrayList;
+
+import circuit.CircuitState;
 
 public class Solution {
 	public static ArrayList<CircuitState> solutions = new ArrayList<CircuitState>();
