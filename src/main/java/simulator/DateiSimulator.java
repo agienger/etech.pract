@@ -13,23 +13,25 @@ import event.Event;
 import event.EventQueue;
 import event.Signal;
 import event.SignalKind;
+import event.SignalListe;
 import file.CircuitState;
 import file.Solution;
 import file.SolutionFile;
 
 public class DateiSimulator {
 
-	private static final boolean OUTPUT = false;
-	private static final boolean VERIFY = true;
-
 	// EventQueue für diesen Simulator, wird im Konstruktor initialisiert
-	private EventQueue queue;
+	private static EventQueue queue;
+	private static ArrayList<Signal> signalList;
 	public static ArrayList<ArrayList<String>> solutionList = new ArrayList<ArrayList<String>>();
+	private  Circuit circuit;
 
 	public DateiSimulator(File circuitFile, File eventFile) {
 
 		queue = new EventQueue();
 		Event.setEventQueue(queue);
+		signalList = new ArrayList<Signal>();
+		Circuit.setSignalList(signalList);
 
 		// Schaltung aufbauen
 		buildCircuit(circuitFile);
@@ -41,7 +43,7 @@ public class DateiSimulator {
 	}
 
 	private void findSteadyState() {
-		for (Signal signal : Signal.getSignalList()) {
+		for (Signal signal : signalList) {
 			if (signal.getSignalKind().equals(SignalKind.INPUT)) {
 				signal.setValue(false);
 				if (signal.getName().equals("nichtreset")) {
@@ -49,27 +51,32 @@ public class DateiSimulator {
 				}
 			}
 		}
-		String firstOutputLine = "Zeit \t";
-		for (Signal signal : Signal.getSignalList()) {
-			SignalKind kind = Signal.getSignalFromList(signal.getName())
-					.getSignalKind();
-			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				firstOutputLine += signal.getName() + "\t";
+		outputInitialState();
+		logCurrentState(0);
+
+	}
+
+	private void outputInitialState() {
+		if (output()) {
+			String firstOutputLine = "Zeit \t";
+			for (Signal signal : signalList) {
+				SignalKind kind = SignalListe.getSignalFromList(signalList,
+						signal.getName()).getSignalKind();
+				if (kind.equals(SignalKind.INPUT)
+						|| kind.equals(SignalKind.OUTPUT)) {
+					firstOutputLine += signal.getName() + "\t";
+				}
 			}
-		}
-		if (OUTPUT) {
 			System.out.println(firstOutputLine);
 		}
-		DateiSimulator.logCurrentState(0);
-
 	}
 
 	private void setInputEvents(File eventFile) {
-		new EventProvider(eventFile);
+		new EventProvider(eventFile, signalList);
 	}
 
-	private void buildCircuit(File file) {
-		new Circuit(file);
+	private void buildCircuit(File circuitFile) {
+		new Circuit(circuitFile);
 	}
 
 	// }
@@ -90,9 +97,9 @@ public class DateiSimulator {
 
 	public static void logCurrentState(int time) {
 		ArrayList<String> states = new ArrayList<String>();
-		for (Signal sig : Signal.getSignalList()) {
-			SignalKind kind = Signal.getSignalFromList(sig.getName())
-					.getSignalKind();
+		for (Signal sig : signalList) {
+			SignalKind kind = SignalListe.getSignalFromList(signalList,
+					sig.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));
 			}
@@ -100,27 +107,40 @@ public class DateiSimulator {
 		Solution.addSolution(new CircuitState(time, states));
 	}
 
+	private static boolean output() {
+		String value = System.getProperty("OUTPUT");
+		if (value!= null && value.toLowerCase().equals("true")) {
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean verify() {
+		String value = System.getProperty("VERIFY");
+		if (value!= null && value.toLowerCase().equals("false")) {
+			return false;
+		}
+		return true;
+	}
+
 	static public void main(String[] args) throws FileNotFoundException,
 			URISyntaxException {
-		
-		
 
-		List<String> examples = Arrays.asList( "beispiel1o", "beispiel1o2", "beispiel-latch",
-				"beispiel-latch2", "beispiel-flipflop", "beispiel-flipflop2",
-				"_blume", "_blume2" );
+		List<String> examples = Arrays.asList("beispiel1o", "beispiel1o2",
+				"beispiel-latch", "beispiel-latch2", "beispiel-flipflop",
+				"beispiel-flipflop2", "_blume", "_blume2");
 		if (args[0].toLowerCase().equals("all")) {
 			for (String testFall : examples) {
 				run(testFall);
 			}
-		}
-		else if(examples.contains(args[0])) {
+		} else if (examples.contains(args[0])) {
 			run(args[0]);
-		}
-		else {
-			System.out.println("Eingabeparameter muss entweder 'ALL' oder einer der folgenden Beispiele sein:");
+		} else {
+			System.out
+					.println("Eingabeparameter muss entweder 'ALL' oder einer der folgenden Beispiele sein:");
 			System.out.println(examples);
 		}
-		
+
 	}
 
 	private static void run(String testFall) throws URISyntaxException {
@@ -136,15 +156,15 @@ public class DateiSimulator {
 		Solution.clear();
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				circuitFileName).toURI());
-		File eventFile = new File(ClassLoader.getSystemResource(
-				eventFileName).toURI());
+		File eventFile = new File(ClassLoader.getSystemResource(eventFileName)
+				.toURI());
 
 		DateiSimulator t = new DateiSimulator(circuitFile, eventFile);
 
 		t.simulate();
 
 		int counter = 0;
-		if (VERIFY) {
+		if (verify()) {
 			solutionFile = new File(ClassLoader.getSystemResource(
 					"solutions/" + testFall + ".erg").toURI());
 			solRows = SolutionFile.getSolutionRowsFromFile(solutionFile);
@@ -158,19 +178,19 @@ public class DateiSimulator {
 			org.junit.Assert.assertEquals(solRow, solRows.get(counter)[0]);
 			for (int i = 0; i < solution.getStates().size(); i++) {
 				solRow += "\t" + solution.getStates().get(i);
-				if (VERIFY) {
-					org.junit.Assert.assertEquals("Fehler in "
-							+ (counter + 1) + ".ten Zeile und " + (i + 1)
-							+ ".ten Spalte.", solution.getStates().get(i),
+				if (verify()) {
+					org.junit.Assert.assertEquals("Fehler in " + (counter + 1)
+							+ ".ten Zeile und " + (i + 1) + ".ten Spalte.",
+							solution.getStates().get(i),
 							solRows.get(counter)[i + 1]);
 				}
 			}
 			counter++;
-			if (OUTPUT) {
+			if (output()) {
 				System.out.println(solRow);
 			}
 		}
-		if (VERIFY) {
+		if (verify()) {
 			System.out.println("Test für Schaltung " + testFall
 					+ " war erfolgreich :-)");
 		}

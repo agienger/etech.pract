@@ -4,6 +4,7 @@ import gatter.Gatter;
 
 import java.util.ArrayList;
 
+import main.Circuit;
 import simulator.DateiSimulator;
 
 /**
@@ -15,16 +16,14 @@ public class Signal {
 	 * gatterList: Liste der Gatter, in welches dieses Signal muendet signaName:
 	 * die ID des Signals signalValue: der Wert des Signals
 	 */
-	private static boolean logStateToSystemOut;
 	private String signalName;
 	private boolean signalValue;
 	private ArrayList<Gatter> gatterList;
 	private int setCounterPre = 0;
 	private SignalKind signalKind;
-	private boolean hasChanged;
-	private boolean previousValue;
+//	private boolean hasChanged;
+//	private boolean previousValue;
 	
-	private static ArrayList<Signal> signalList = new ArrayList<Signal>();
 
 	/**
 	 * Constructor for objects of class Signal
@@ -37,7 +36,6 @@ public class Signal {
 	public Signal(String name) {
 		setName(name);
 		gatterList = new ArrayList<Gatter>();
-		signalList.add(this);
 	}
 	
 	public Signal(String name , SignalKind kind){
@@ -99,7 +97,7 @@ public class Signal {
 		}
 		int time = Event.getEventQueue().getRunTime();
 		if (time > 0) {
-			SignalKind kind = Signal.getSignalFromList(this.getName()).getSignalKind();
+			SignalKind kind = SignalListe.getSignalFromList(Circuit.getSignalList(),this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
 				DateiSimulator.logCurrentState(time);
 			}
@@ -136,18 +134,18 @@ public class Signal {
 	// }
 	// }
 
-	private boolean isOutPutSignal() {
-		boolean isKnownOutput = (this.getName().startsWith("Out")
-				|| this.getName().startsWith("memOut") || this.getName()
-				.startsWith("CntAddr")) && !this.getName().equals("memOut3");
-		return (isKnownOutput);
-		// return (isKnownOutput ||
-		// DateiSimulator.outputs.containsKey(this.getName()));
-	}
+//	private boolean isOutPutSignal() {
+//		boolean isKnownOutput = (this.getName().startsWith("Out")
+//				|| this.getName().startsWith("memOut") || this.getName()
+//				.startsWith("CntAddr")) && !this.getName().equals("memOut3");
+//		return (isKnownOutput);
+//		// return (isKnownOutput ||
+//		// DateiSimulator.outputs.containsKey(this.getName()));
+//	}
 
-	public static void setLogStateToSystemOut(boolean logStateToSystemOut) {
-		Signal.logStateToSystemOut = logStateToSystemOut;
-	}
+//	public static void setLogStateToSystemOut(boolean logStateToSystemOut) {
+//		Signal.logStateToSystemOut = logStateToSystemOut;
+//	}
 
 	public ArrayList<Gatter> getGatterList() {
 		return gatterList;
@@ -160,21 +158,11 @@ public class Signal {
 	public void setSignalKind(SignalKind signalKind) {
 		this.signalKind = signalKind;
 	}
+	
 
-	public static Signal getSignalFromList(String sigName) {
-		for (Signal signal : signalList) {
-			if (signal.getName().equals(sigName)) {
-				return signal;
-			}
-		}
-		return null;
-	}
+	
 
-	public static ArrayList<Signal> getSignalList() {
-		return signalList;
-	}
+	
 
-	public static void clearSignalList() {
-		signalList.clear();
-	}
+	
 }

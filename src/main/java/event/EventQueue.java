@@ -12,7 +12,7 @@ import java.util.ListIterator;
  * @version 1.2 17.06.06
  */
 public class EventQueue {
-	public LinkedList<Event> eventListe;
+	private LinkedList<Event> eventListe;
 	private  int runTime;
 	private boolean isStarted = false;
 
@@ -131,6 +131,10 @@ public class EventQueue {
 	public void remove(Event event) {
 		eventListe.remove(event);
 		
+	}
+
+	public LinkedList<Event> getEventListe() {
+		return eventListe;
 	}
 
 }

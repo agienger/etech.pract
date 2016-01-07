@@ -19,13 +19,13 @@ public class EventQueueTest {
 	private Signal s3 = new Signal("s3");;
 
 	private LinkedList<Event> eventListe;
+	EventQueue queue;
 
 	@Before
 	public void setUp() throws Exception {
-		EventQueue queue;
-		queue = new EventQueue();
+		EventQueue queue = new EventQueue();
 		Event.setEventQueue(queue);
-		eventListe = queue.eventListe;
+		eventListe = queue.getEventListe();
 	}
 
 	@Test

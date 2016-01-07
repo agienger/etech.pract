@@ -168,7 +168,7 @@ public class FullTimingSimulator {
 		for (int i = 0; i < numBits; i++) {
 			reg[i] = new FF(20);
 			reg[i].setInput(0, clk);
-			Signal regInput = new Signal(prefix + "regI" + i);
+//			Signal regInput = new Signal(prefix + "regI" + i);
 			Signal newBit = new Signal(prefix + "muxI" + i);
 			if (i == 0) {
 				Not feedback = new Not(2);
@@ -481,7 +481,6 @@ public class FullTimingSimulator {
 				System.out.println("Zweites Argument muss eine Zahl zwischen 1 und 3 sein");
 				return;
 			}
-			Signal.setLogStateToSystemOut(logToSystemOut);
 
 			String fileNamePrefix = "solutions/solutionfile";
 

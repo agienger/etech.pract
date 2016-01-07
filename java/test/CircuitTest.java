@@ -8,18 +8,27 @@ import java.util.ArrayList;
 
 import main.Circuit;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import event.Signal;
 
 public class CircuitTest {
-
+	ArrayList<Signal> signalList;
+	Circuit circuit;
+	
+	@Before
+	public void setUp() {
+		signalList = new ArrayList<Signal>();
+		Circuit.setSignalList(signalList);
+	}
+	
 	@Test
 	public void testBeispiel1o() throws URISyntaxException {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel1o.cir").toURI());
-		new Circuit(circuitFile);
-		ArrayList<Signal> signalList = Signal.getSignalList();
+		circuit = new Circuit(circuitFile);
+		signalList = Circuit.getSignalList();
 		assertEquals(8, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("a", testSignal.getName());
@@ -33,8 +42,8 @@ public class CircuitTest {
 	public void testLatch() throws URISyntaxException {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel-latch.cir").toURI());
-		new Circuit(circuitFile);
-		ArrayList<Signal> signalList = Signal.getSignalList();
+		circuit = new Circuit(circuitFile);
+		signalList = Circuit.getSignalList();
 		assertEquals(6, signalList.size());
 		Signal testSignal = signalList.get(3);
 		assertEquals("i1", testSignal.getName());
@@ -48,8 +57,8 @@ public class CircuitTest {
 	public void testBlume() throws URISyntaxException {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/_blume.cir").toURI());
-		new Circuit(circuitFile);
-		ArrayList<Signal> signalList = Signal.getSignalList();
+		circuit = new Circuit(circuitFile);
+		signalList = Circuit.getSignalList();
 		assertEquals(21, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("warm", testSignal.getName());
@@ -63,8 +72,8 @@ public class CircuitTest {
 	public void testFlipFlop() throws URISyntaxException {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel-flipflop.cir").toURI());
-		new Circuit(circuitFile);
-		ArrayList<Signal> signalList = Signal.getSignalList();
+		circuit = new Circuit(circuitFile);
+		signalList = Circuit.getSignalList();
 		assertEquals(19, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("a", testSignal.getName());

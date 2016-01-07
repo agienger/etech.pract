@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +23,13 @@ import gatter.Or;
 
 public class Circuit {
 
+	
+	private static ArrayList<Signal> signalList;
 	DateiLeser fileReader;
 	private HashMap<String, Gatter> gates = new HashMap<String, Gatter>();
 
 	public Circuit(File file) {
-		Signal.clearSignalList();
+		
 		fileReader = new DateiLeser(file.getPath());
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile();
@@ -35,15 +38,15 @@ public class Circuit {
 			}
 			if (line.toLowerCase().startsWith("input")) {
 				for (String sigName : getInformationFromLine(line, "Input")) {
-					new Signal(sigName,SignalKind.INPUT);
+					signalList.add(new Signal(sigName,SignalKind.INPUT));
 				}
 			} else if (line.toLowerCase().startsWith("output")) {
 				for (String sigName : getInformationFromLine(line, "Output")) {
-					new Signal(sigName,SignalKind.OUTPUT);
+					signalList.add(new Signal(sigName,SignalKind.OUTPUT));
 				}
 			} else if (line.toLowerCase().startsWith("signal")) {
 				for (String sigName : getInformationFromLine(line, "Signal")) {
-					new Signal(sigName,SignalKind.INNER);
+					signalList.add(new Signal(sigName,SignalKind.INNER));
 				}
 			} else if (line.toLowerCase().startsWith("gate")) {
 				int numberOfInputs = 0;
@@ -98,7 +101,7 @@ public class Circuit {
 		String sigName = line.replaceAll(regex, "$3");
 
 		Gatter gatter = gates.get(gateName);
-		Signal signal = Signal.getSignalFromList(sigName);
+		Signal signal = getSignalFromList(sigName);
 		String propertyTlc = property.toLowerCase();
 		if (propertyTlc.equals("o") || propertyTlc.equals("q")) {
 			gatter.setOutput(signal);
@@ -127,6 +130,24 @@ public class Circuit {
 
 	public HashMap<String, Gatter> getGates() {
 		return gates;
+	}
+
+	public static ArrayList<Signal> getSignalList() {
+		return signalList;
+	}
+	
+	Signal getSignalFromList(String sigName) {
+		for (Signal signal : signalList) {
+			if (signal.getName().equals(sigName)) {
+				return signal;
+			}
+		}
+		return null;
+	}
+
+	public static void setSignalList(ArrayList<Signal> sigList) {
+		signalList = sigList;
+		
 	}
 
 }
