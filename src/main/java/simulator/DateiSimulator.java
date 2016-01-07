@@ -23,7 +23,6 @@ public class DateiSimulator {
 	private static EventQueue queue;
 	private static ArrayList<Signal> signalList;
 	public static ArrayList<ArrayList<String>> solutionList = new ArrayList<ArrayList<String>>();
-	private  Circuit circuit;
 
 	public DateiSimulator(File circuitFile, File eventFile) {
 

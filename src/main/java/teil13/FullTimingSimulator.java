@@ -1,15 +1,16 @@
-package simulator;
+package teil13;
+
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import verify.SolutionFile;
-import circuit.Event;
-import circuit.EventQueue;
-import circuit.Signal;
+import event.Event;
+import event.EventQueue;
+import event.Signal;
+import file.SolutionFile;
 import gatter.And;
 import gatter.Buf;
 import gatter.Exor;
@@ -168,7 +169,7 @@ public class FullTimingSimulator {
 		for (int i = 0; i < numBits; i++) {
 			reg[i] = new FF(20);
 			reg[i].setInput(0, clk);
-//			Signal regInput = new Signal(prefix + "regI" + i);
+			Signal regInput = new Signal(prefix + "regI" + i);
 			Signal newBit = new Signal(prefix + "muxI" + i);
 			if (i == 0) {
 				Not feedback = new Not(2);
@@ -473,29 +474,22 @@ public class FullTimingSimulator {
 	 * nat�rlich auch durch Auswertung der Kommandozeilenparameter tuen.
 	 * 
 	 * @throws FileNotFoundException
-	 * @throws URISyntaxException
 	 */
-	static public void run(int testFall, boolean logToSystemOut) throws FileNotFoundException,
-			URISyntaxException {
-			if (!(testFall > 0 && testFall < 4)) {
-				System.out.println("Zweites Argument muss eine Zahl zwischen 1 und 3 sein");
-				return;
-			}
-
-			String fileNamePrefix = "solutions/solutionfile";
-
+	static public void main(String[] args) throws FileNotFoundException {
+		String fileNamePrefix = "solutions/solutionfile";
+		for (int testFall = 1; testFall <= 3; testFall++) {
 			String fileName = fileNamePrefix + testFall;
-			File solutionFile = new File(ClassLoader
-					.getSystemResource(fileName).toURI());
+			File solutionFile = new File(ClassLoader.getSystemResource(fileName).getFile());
 
 			FullTimingSimulator t = new FullTimingSimulator(testFall);
 			ArrayList<String> expectedSolutions = SolutionFile
 					.getExpectedSolutions(solutionFile);
 			t.simulate();
 			for (int i = 0; i < expectedSolutions.size(); i++) {
-				org.junit.Assert.assertEquals(expectedSolutions.get(i),
+				assertEquals(expectedSolutions.get(i),
 						calculatedSolutions.get(i));
 			}
 			System.out.println("Testfall " + testFall + " erfolgreich :-)");
+		}
 	}
 }
