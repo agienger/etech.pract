@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 
-import verify.Solution;
+import verify.Result;
 import circuit.CircuitState;
 
 public class SolutionTest {
 	
 	@Before
 	public void setUp() {
-		Solution.clear();
+		Result.clear();
 	}
 
 	@Test
@@ -22,8 +22,8 @@ public class SolutionTest {
 		ArrayList<String> stat1 = new ArrayList<String>();
 		stat1.add("0");stat1.add("1");stat1.add("0");
 		CircuitState circ1 = new CircuitState(10, stat1);
-		Solution.addSolution(circ1);
-		assertEquals(1,Solution.solutions.size());
+		Result.addState(circ1);
+		assertEquals(1,Result.results.size());
 	}
 	
 	@Test
@@ -32,10 +32,10 @@ public class SolutionTest {
 		stat1.add("0");stat1.add("1");stat1.add("0");
 		CircuitState circ1 = new CircuitState(10, stat1);
 		CircuitState circ2 = new CircuitState(20, stat1);
-		Solution.addSolution(circ1);
-		Solution.addSolution(circ2);
+		Result.addState(circ1);
+		Result.addState(circ2);
 
-		assertEquals(1,Solution.solutions.size());
+		assertEquals(1,Result.results.size());
 	}
 	
 	@Test
@@ -46,10 +46,10 @@ public class SolutionTest {
 		stat2.add("0");stat2.add("1");stat2.add("1");
 		CircuitState circ1 = new CircuitState(10, stat1);
 		CircuitState circ2 = new CircuitState(20, stat2);
-		Solution.addSolution(circ1);
-		Solution.addSolution(circ2);
+		Result.addState(circ1);
+		Result.addState(circ2);
 
-		assertEquals(2,Solution.solutions.size());
+		assertEquals(2,Result.results.size());
 	}
 
 }

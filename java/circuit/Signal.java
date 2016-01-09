@@ -96,7 +96,7 @@ public class Signal {
 		if (time > 0) {
 			SignalKind kind = Signal.getSignalFromList(Circuit.getSignalList(),this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				DateiSimulator.logCurrentState(time);
+				DateiSimulator.storeCurrentState(time);
 			}
 		}
 	}

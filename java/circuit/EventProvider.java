@@ -7,8 +7,12 @@ import file.DateiLeser;
 
 public class EventProvider {
 
+	public EventProvider(File eventFile) {
+		this(eventFile, Circuit.getSignalList());
+	}
+
 	public EventProvider(File eventFile, ArrayList<Signal> signalList) {
-		DateiLeser	fileReader = new DateiLeser(eventFile.getPath());
+		DateiLeser fileReader = new DateiLeser(eventFile.getPath());
 
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile();
@@ -16,12 +20,12 @@ public class EventProvider {
 				continue;
 			} else {
 				String[] eventData = line.split("\\s+");
-				new Event(Signal.getSignalFromList(signalList,eventData[1]), Integer.parseInt(eventData[0]),
-						toBoolean(eventData[2]));
+				new Event(Signal.getSignalFromList(signalList, eventData[1]),
+						Integer.parseInt(eventData[0]), toBoolean(eventData[2]));
 			}
 		}
 	}
-	
+
 	public EventQueue getEventqueue() {
 		return Event.getEventQueue();
 	}
@@ -32,6 +36,5 @@ public class EventProvider {
 		}
 		return false;
 	}
-
 
 }
