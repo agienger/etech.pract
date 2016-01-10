@@ -16,7 +16,7 @@ public class Nand extends Gatter{
 	 * Konstruktor der Klasse Nand, initialisiert ein Signal Array mit anzahl
 	 * Feldern und Wartezeit wTime
 	 * 
-	 * @param anzahl
+	 * @param anzahl Anzahl der Eingangssignale
 	 */
 	public Nand(int anzahl, int wTime) {
 		super(anzahl, wTime);

@@ -7,10 +7,6 @@ import file.DateiLeser;
 
 public class EventProvider {
 
-	public EventProvider(File eventFile) {
-		this(eventFile, Circuit.getSignalList());
-	}
-
 	public EventProvider(File eventFile, ArrayList<Signal> signalList) {
 		DateiLeser fileReader = new DateiLeser(eventFile.getPath());
 

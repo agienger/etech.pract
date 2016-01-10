@@ -29,21 +29,24 @@ public class DateiSimulator {
 	 * geschrieben.
 	 * Nach Abarbeitung des Events wird dieses aus der Queue gelöscht. 
 	 */
-	private static EventQueue queue;
+	private EventQueue queue;
 	/**
-	 * Statische Liste aller Signale, die in {@link circuit.Circuit} erzeugt werden.
+	 * Liste aller Signale, die in {@link circuit.Circuit} erzeugt werden.
 	 * Zum einen wird diese benötigt, um alle Eingabe Signale in der {@link findSteadyState()} Methode 
 	 * zu initialisieren, zum anderen verwenden wir die Liste für die Ausgabe der Ergebnisse
 	 * (alle Input und Output Signale) und zuer Verifikation dieser gegen die erwarteten Ergbnisse, die wir 
 	 * aus der Ergebnisdatei erahlten. 
 	 */
-	private static ArrayList<Signal> signalList;
+	private ArrayList<Signal> signalList;
+	
+	private Circuit circuit;
 
 	/**
-	 * Im Konstruktor werden die beiden statischen Variablen {@link #queue} und {@link signalList} intialisiert.
+	 * Im Konstruktor werden die beiden Member {@link #queue} und {@link signalList} intialisiert.
 	 * Danach werden in den Methoden {@link buildCircuit(File)} die Schaltung aus dem circuitFile aufgebaut, 
 	 * der stabile Ausgangszustand berechnet in der Methode {@link findSteadyState()} 
-	 * und schließlich werden die initialen Input Events in der Methode {@link setInputEvents(File)} gesetzt.
+	 * und schließlich werden die initialen Input Events über  eine Instanz von {@link circuit.EventProvider}
+	 * erzeugt.
 	 * 
 	 * @param circuitFile Die Datei, in welcher die Schaltkreis-Defintion gepflegt ist (.cir Datei)
 	 * @param eventFile Die Datei, in welcher die Events gepgflegt sind (.event Datei)
@@ -53,12 +56,11 @@ public class DateiSimulator {
 
 		queue = new EventQueue();
 		Event.setEventQueue(queue);
-		signalList = new ArrayList<Signal>();
-		Circuit.setSignalList(signalList);
-
-		buildCircuit(circuitFile);
+		circuit = new Circuit(circuitFile);
+		signalList = circuit.getSignalList();
+		Signal.setSignalList(signalList);
 		findSteadyState();
-		setInputEvents(eventFile);
+		new EventProvider(eventFile, signalList);
 
 	}
 
@@ -77,7 +79,7 @@ public class DateiSimulator {
 			}
 		}
 		outputInitialState();
-		storeCurrentState(0);
+		Result.storeCurrentState(0, signalList);
 
 	}
 
@@ -101,25 +103,9 @@ public class DateiSimulator {
 	}
 
 	/**
-	 * Erzeugt eine Instanz von {@link circuit.EventProvider}
-	 * @param eventFile Datei, in der die initialen Input Events gespeichert sind
-	 */
-	private void setInputEvents(File eventFile) {
-		new EventProvider(eventFile);
-	}
-
-	/**
-	 * Erzeugt eine Instanz von {@link circuit.Circuit}
-	 * @param circuitFile Datei, in welcher die Schaltung definiert ist
-	 */
-	private void buildCircuit(File circuitFile) {
-		new Circuit(circuitFile);
-	}
-
-	/**
 	 * Diese Methode startet die Simulation durch. Solange in der {@link #queue} 
 	 * noch Events stehen wird das erste Element der List genommen und daran die Methode 
-	 * {@link circuit.Event.proagate()} ausgeführt.
+	 * {@see circuit.Event.#proagate()} ausgeführt.
 	 * 
 	 */
 	public void simulate() {
@@ -127,22 +113,6 @@ public class DateiSimulator {
 			Event e = queue.getFirst();
 			e.propagate();
 		}
-	}
-
-	/**
-	 * Speichert den Status der Schaltung zum Zeitpunkt {@link time} in die statische Liste {@link verify.Result#results}, siehe {@see verify.Result}
-	 * @param time Zeitpunkt der Schaltung
-	 */
-	public static void storeCurrentState(int time) {
-		ArrayList<String> states = new ArrayList<String>();
-		for (Signal sig : signalList) {
-			SignalKind kind = Signal.getSignalFromList(signalList,
-					sig.getName()).getSignalKind();
-			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));
-			}
-		}
-		Result.addState(new CircuitState(time, states));
 	}
 
 	/**
@@ -172,8 +142,8 @@ public class DateiSimulator {
 	/**
 	 * Die {@code main} Methode startet die Simulation der Schaltung(en), abhängig vom Einagbewert.
 	 * @param args Es wird ein Eingabewert {@code args[0]} ausgewertet, Wenn der auf {@code all} 
-	 * gesetzt ist, werden alle Beispiele aus der Liste {@code examples} ausgeführt. Ansonsten wir ein 
-	 * Beispiel aus der Liste erwartet und berechnet.
+	 * gesetzt ist, werden alle Beispiele aus der Liste {@code examples} ausgeführt. Ansonsten wird ein 
+	 * Beispiel aus der Liste {@code examples} erwartet und berechnet.
 	 * 
 	 * @throws FileNotFoundException
 	 * @throws URISyntaxException
@@ -184,7 +154,7 @@ public class DateiSimulator {
 		List<String> examples = Arrays.asList("beispiel1o", "beispiel1o2",
 				"beispiel-latch", "beispiel-latch2", "beispiel-flipflop",
 				"beispiel-flipflop2", "_blume", "_blume2");
-		if (args[0].toLowerCase().equals("all")) {
+		if (args.length == 0 || args[0].toLowerCase().equals("all")) {
 			for (String testFall : examples) {
 				run(testFall);
 			}

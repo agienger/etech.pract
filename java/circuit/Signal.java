@@ -4,43 +4,67 @@ import gatter.Gatter;
 
 import java.util.ArrayList;
 
-import simulator.DateiSimulator;
+import verify.Result;
 
 /**
- * @author Lion Gienger August 2015
+ * @author Lion Gienger
  *
  */
 public class Signal {
+	
 	/**
-	 * gatterList: Liste der Gatter, in welches dieses Signal muendet signaName:
-	 * die ID des Signals signalValue: der Wert des Signals
+	 * Maximale Änderungen eines Signals während der Einschwingphase
+	 */
+	private static final int COUNTER_PRE_MAX = 10;
+	/**
+	 * Name des Signals
 	 */
 	private String signalName;
-	private boolean signalValue;
-	private ArrayList<Gatter> gatterList;
-	private int setCounterPre = 0;
-	private SignalKind signalKind;
-	
-
 	/**
-	 * Constructor for objects of class Signal
-	 *
-	 * setzt den Namen des Signals - initialisiert die Gatterliste
-	 * 
-	 * @param name
-	 *            : name of the signal
+	 * Wert des Signals
+	 */
+	private boolean signalValue;
+	/**
+	 * Liste der Gatter, in welches dieses Signal mündet.
+	 */
+	private ArrayList<Gatter> gatterList;
+	/**
+	 * Zähler der angibt, wie oft das Signal in der Einschwungphase geändert wurde
+	 */
+	private int setCounterPre = 0;
+	/**
+	 * Art des Signals (Input, Output, Inner)
+	 */
+	private SignalKind signalKind;
+	/**
+	 * Statische Liste aller Signale
+	 */
+	private static ArrayList<Signal> signalList;
+	
+	
+	/**
+	 * Der Names des Signals wird gesetzt und 
+	 * die GatterListe des Signals wird initialisiert.
+	 * @param name Name des Signals
 	 */
 	public Signal(String name) {
 		setName(name);
 		gatterList = new ArrayList<Gatter>();
 	}
 	
+	/**
+	 * Der Names und die Art des Signals werden gesetzt und 
+	 * die GatterListe des Signals wird initialisiert.
+	 * @param name Name des Signals
+	 * @param kind Art des Signals
+	 */
 	public Signal(String name , SignalKind kind){
 		this(name);
 		setSignalKind(kind);
 	}
 
 	/**
+	 * Gibt den Signalwert zurück.
 	 * @return der Wert des Signals
 	 */
 	public boolean getValue() {
@@ -48,6 +72,7 @@ public class Signal {
 	}
 
 	/**
+	 * Gibt den Signalnamen zurück.
 	 * @return der Name des Signals
 	 */
 	public String getName() {
@@ -55,65 +80,81 @@ public class Signal {
 	}
 
 	/**
+	 * Setzt den Namen des Signals
 	 * @param signalName Name des Signals
-	 * <br>Setzt den Namen des Signals
+	 * 
 	 */
 	public void setName(String signalName) {
 		this.signalName = signalName;
 	}
 
 	/**
-	 * Schaltungsaufbau: Diese Methode wird aus dem Gatter (Nand Klasse) beim
-	 * Aufbau der Schaltung gerufen. Sie fuegt das jeweilige Gatter der
-	 * Gatterlist hinzu.
+	 * Wird beim Schaltungsaufbau aus dem Gatter gerufen. 
+	 * Fügt das Gatter der Gatterliste des Signals hinzu.
 	 * 
-	 * @param gatter
-	 *            : Das Gatter das zur Gatterliste zugefuegt wird.
+	 * @param gatter Das Gatter das zur Gatterliste zugefügt wird.
 	 */
 	public void connectTo(Gatter gatter) {
 		gatterList.add(gatter);
 	}
 
 	/**
-	 * An dieser Stelle wird der Wert des Signals geaendert. In einer Schleife
-	 * ueber die angeschlossenen Gatter wird dann jeweils pro Gatter das
-	 * Ausgabesignal berechnet. Die Aenderung des Ausgangssignals in den
-	 * angeschlossenen Gattern wiederun triggert die weitere Berechnungen
+	 * Setzt den aktuellen Wert des Signals. Wir unterscheiden 2 Fälle:
+	 * <br> 1. In der Einschwingphase ({@code Event.getEventQueue().getRunTime() == 0}) wird sofort für alle
+	 * angeschlossenen Gatter der Output des Gatters neu berechnet. Wegenn möglicher Rückkopplungen 
+	 * merken wir uns, wie oft das Signal bereits geändert wurde. Wenn die Anzahl der Änderungen 
+	 * {@code COUNTER_PRE_MAX} übersteigt werden die Gatter nicht mehr geändert.
+	 * <br> 2. Wenn die EventQueue bereits gestartet ist, werden die Signale nicht sofort weitergeschaltet, 
+	 * sondern die Gatter werden über die {@see circuit.Event.#propagate()} 
+	 * Methode für jedes neue Event neu berechnet.
 	 * 
 	 * @param value Wert des Signals
 	 */
 	public void setValue(boolean value) {
 		signalValue = value;
 
-		if ((Event.getEventQueue().getRunTime() == 0) && setCounterPre < 10) {
+		if ((Event.getEventQueue().getRunTime() == 0) && setCounterPre < COUNTER_PRE_MAX) {
 			setCounterPre++;
 			for (Gatter gatter : gatterList) {
-				gatter.getClass();
 				gatter.setOutputValue();
 			}
 		}
 		int time = Event.getEventQueue().getRunTime();
 		if (time > 0) {
-			SignalKind kind = Signal.getSignalFromList(Circuit.getSignalList(),this.getName()).getSignalKind();
+			SignalKind kind = Signal.getSignalFromList(signalList,this.getName()).getSignalKind();
 			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
-				DateiSimulator.storeCurrentState(time);
+				Result.storeCurrentState(time, signalList);
 			}
 		}
 	}
 
-
+	/**
+	 * @return Gatterliste des Signals
+	 */
 	public ArrayList<Gatter> getGatterList() {
 		return gatterList;
 	}
 
+	/**
+	 * @return Art des Signals (Inner, Input, Output)
+	 */
 	public SignalKind getSignalKind() {
 		return signalKind;
 	}
 
+	/**
+	 * @param signalKind Art des Signals (Inner, Input, Output)
+	 */
 	public void setSignalKind(SignalKind signalKind) {
 		this.signalKind = signalKind;
 	}
 
+	/**
+	 * Hilfsmethode, sucht ein Signal aus der Signal Liste und gibt dieses zurück.
+	 * @param signalList Liste der Signale
+	 * @param sigName Name des Signals
+	 * @return Signal aus der Signalliste, falls gefunden, ansonsten {@code null}
+	 */
 	public static Signal getSignalFromList(ArrayList<Signal> signalList, String sigName) {
 		for (Signal signal : signalList) {
 			if (signal.getName().equals(sigName)) {
@@ -121,6 +162,13 @@ public class Signal {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * @param signalList List der Signales
+	 */
+	public static void setSignalList(ArrayList<Signal> signalList) {
+		Signal.signalList = signalList;
 	}
 	
 

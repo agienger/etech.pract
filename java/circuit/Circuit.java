@@ -19,15 +19,54 @@ import gatter.Nor;
 import gatter.Not;
 import gatter.Or;
 
+/**
+ * @author Lion Gienger
+ * Diese Klasse beinhaltet einen Schaltkreis (circuit)
+ *
+ */
 public class Circuit {
-
 	
-	private static ArrayList<Signal> signalList;
-	DateiLeser fileReader;
+	/**
+	 * Liste aller Signale dieses Circuits
+	 */
+	private ArrayList<Signal> signalList;
+	/**
+	 * Dieser fileReader liest das Circuit file ein
+	 */
+	private DateiLeser fileReader;
+	/**
+	 * Diese Map hält alle Gatter dieses Circuits. Der key dieser Map ist der Name des Gatters, 
+	 * der Wert ist die erzeugte Instanz des Gatters
+	 * 
+	 */
 	private HashMap<String, Gatter> gates = new HashMap<String, Gatter>();
 
+	/**
+	 * Folgende Schritte werden im Konstruktor des Circuits durchgeführt:
+	 * <br> 1. Initialisieren der SignalListe
+	 * <br> 2. Erzeugen des fileReaders als Instanz von {@link file.DateiLeser}
+	 * <br> 3. In einer Schleife werden nun alle Zeilen der Eingabedatei ausgelesen
+	 * <br> 4. Alle Zeilen die mit einem {@code #} beginnen oder die nur whitespaces beinhalten werden ignoriert.
+	 * <br> 5. Zeilen die mit dem keyword {@code input} beginnen, werden als input Signale in die Signalliste geschrieben.
+	 * <br> 7. Zeilen die mit dem keyword {@code output} beginnen, werden als output Signale in die Signalliste geschrieben.
+	 * <br> 8. Zeilen die mit dem keyword {@code signal} beginnen, werden als innere Signale in die Signalliste geschrieben.
+	 * <br> 9. Zeilen die mit dem keyword {@code gater} beginnen, definieren ein Gatter. Die Zeile wird gesplittet an den 
+	 * whitespaces und das Ergebnis in ein Array geschrieben.
+	 * <br> 9.1. Das zweite Element dieses Arrays ({@code gateData[1]}) definiert den Namen des Gatters.
+	 * <br> 9.2. Das dritte Element dieses Arrays ({@code gateData[2]}) besteht aus einem Wort und einer Zahl.
+	 * Das Wort beschreibt die Art des Gatters (z.B {@code AND} oder {@code FF}), die Zahl beschreibt 
+	 * die Anzahl der Eingänge. Falls die Zahl fehlt, z.B. bei {@code BUF}, ist die Anzahl der Eingänge bereits
+	 * die Art der Gatters definert. 
+	 * <br> 9.3. Das fünfte Element dieses Arrays ({@code gateData[1]}) definiert die delay Zeit dieses Gatters
+	 * <br> 9.4. Schließlich wird ein Instanz des jeweiligen Gatters erzeugt, abhängig von der Art des Gatters.
+	 * <br> 10. Alle anderen Zeilen defineren In- und Outputs eines Gatters, dies wird 
+	 * in der Methode {@link #gateDefinition(String)} verarbeitet.
+	 * 
+	 * @param file Die Datei, in welcher die Schaltkreis-Defintion gepflegt ist (.cir Datei)
+	 */
 	public Circuit(File file) {
 		
+		signalList = new ArrayList<Signal>();
 		fileReader = new DateiLeser(file.getPath());
 		while (fileReader.nochMehrZeilen()) {
 			String line = fileReader.gibZeile();
@@ -92,6 +131,27 @@ public class Circuit {
 		}
 	}
 
+	/**
+	 * Die Gatter Definition folgt dem Pattern [gatter].[in/out9=[signal]. Dies bilden wir in
+	 * dem regulären Ausdruck {@code regex} ab, wo wir entsprechend 3 Gruppen definieren.
+	 * <br> Die erste Gruppe beinhaltet den Gatternamen
+	 * <br> Bei der zweiten Gruppe muss man mehrere Fallunterscheidungen machen: Beginnt sie mit {@code i} 
+	 * gefolgt von einer Zahl n, so bezeichnet dies das n-te Eingangssignal des Gatters.
+	 * <br> Besteht sie aus einem {@code o} oder {@code q}, so bezeichnet dies das Ausgangssignal des Gatters.
+	 * {@code q} wird für ein {@code LATCH} bzw.  Gatter verwendet.
+	 * <br> Besteht sie aus einem {@code nq}, so bezeichnet dies das negierte Ausgangssignal des {@code FF} Gatters.
+	 * <br> Besteht sie aus einem {@code e} oder einem {@code c}, so bezeichnet dies das "enable" bzw. 
+	 * "clock" Signal eines {@code LATCH} bzw. {@code FF} Gatters.
+	 * <br> Besteht sie aus einem {@code d}, so bezeichnet dies das Datensignal eines
+	 * {@code LATCH} bzw. {@code FF} Gatters.
+	 * <br> In allen anderen Fällen wird eine Exception geworfen, das eine solche property nicht bekannt ist.
+	 * <br>
+	 * <br> Die entsprechenden Signal werden dann über die Methoden {@code setOutput()}, {@code setNegOutput} 
+	 * (bei {@code FF}) bzw. {@code setInput} der Gatter gesetzt.
+	 * <br>
+	 * @param line Zeile der Eingabedatei (ohne Whitespaces), 
+	 * in der die In- und Output Signale eines Gatters definiert sind.
+	 */
 	private void gateDefinition(String line) {
 		String regex = "(\\w+)\\.(\\w+)=(\\w+);";
 		String gateName = line.replaceAll(regex, "$1");
@@ -99,7 +159,7 @@ public class Circuit {
 		String sigName = line.replaceAll(regex, "$3");
 
 		Gatter gatter = gates.get(gateName);
-		Signal signal = getSignalFromList(sigName);
+		Signal signal = Signal.getSignalFromList(signalList, sigName);
 		String propertyTlc = property.toLowerCase();
 		if (propertyTlc.equals("o") || propertyTlc.equals("q")) {
 			gatter.setOutput(signal);
@@ -121,31 +181,24 @@ public class Circuit {
 		}
 	}
 
+	/**
+	 * Hilfsmethode, welche für ein Signalzeile angewendet wird. Es werden in der Zeile zunächst 
+	 * sas keyword und die whitespaces gelöscht und dann an dem Kommas gesplittet und in eine 
+	 * Liste von Signalnamen geschrieben.
+	 * @param line Zeile der Eingabedatei
+	 * @param keyword Gibt an ob, es sich um InPut, Output oder inneres Signal handelt.
+	 * @return Liste der Signalnamen
+	 */
 	private List<String> getInformationFromLine(String line, String keyword) {
 		return Arrays.asList(line.replaceAll(keyword + " (.*);", "$1")
 				.replaceAll("\\s", "").split(","));
 	}
 
-	public HashMap<String, Gatter> getGates() {
-		return gates;
-	}
-
-	public static ArrayList<Signal> getSignalList() {
+	/**
+	 * @return Signal Liste der Circuits
+	 */
+	public  ArrayList<Signal> getSignalList() {
 		return signalList;
-	}
-	
-	Signal getSignalFromList(String sigName) {
-		for (Signal signal : signalList) {
-			if (signal.getName().equals(sigName)) {
-				return signal;
-			}
-		}
-		return null;
-	}
-
-	public static void setSignalList(ArrayList<Signal> sigList) {
-		signalList = sigList;
-		
 	}
 
 }

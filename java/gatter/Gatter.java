@@ -32,10 +32,11 @@ public abstract class Gatter {
 	public static ArrayList<Gatter> globalGatterList = new ArrayList<Gatter>();
 
 	/**
-	 * Konstruktor der Klasse Gatter, initialisiert ein Signal Array mit @param anzahl
-	 * Feldern und Wartezeit wTime
+	 * Konstruktor der Klasse Gatter, initialisiert ein Signal Array mit {@code anzahl}
+	 * Feldern und Wartezeit {@code wTime}
 	 * 
-	 * @param anzahl
+	 * @param anzahl Anzahl der Eingänge
+	 * @param wTime Delay Time des Gatters
 	 */
 	public Gatter(int anzahl, int wTime) {
 		inputSignalArray = new Signal[anzahl];
@@ -48,8 +49,8 @@ public abstract class Gatter {
 	 * inputSignal. Ausserdem weist die Methode diesem Signal dieses Gatter als
 	 * Ziel zu.
 	 * 
-	 * @param inputNummer
-	 * @param inputSignal
+	 * @param inputNummer Nummer des Eingangs
+	 * @param inputSignal Input Signal
 	 */
 	public void setInput(int inputNummer, Signal inputSignal) {
 		inputSignalArray[inputNummer] = inputSignal;
@@ -59,7 +60,7 @@ public abstract class Gatter {
 	/**
 	 * Schaltungsaufbau: Setzt das Ausgangssignal signal
 	 * 
-	 * @param s
+	 * @param s Ausgangssignal
 	 */
 	public void setOutput(Signal s) {
 		output = s;

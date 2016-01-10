@@ -3,6 +3,8 @@ package verify;
 import java.util.ArrayList;
 
 import circuit.CircuitState;
+import circuit.Signal;
+import circuit.SignalKind;
 
 public class Result {
 	public static ArrayList<CircuitState> results = new ArrayList<CircuitState>();
@@ -34,6 +36,23 @@ public class Result {
 		return false;
 	}
 
+	/**
+	 * Speichert den Status der Schaltung zum Zeitpunkt {@code time} in die statische Liste 
+	 * {@link verify.Result#results}, siehe {@link verify.Result}
+	 * @param time Zeitpunkt der Schaltung
+	 */
+	public static void storeCurrentState(int time, ArrayList<Signal> signalList) {
+		ArrayList<String> states = new ArrayList<String>();
+		for (Signal sig : signalList) {
+			SignalKind kind = Signal.getSignalFromList(signalList,
+					sig.getName()).getSignalKind();
+			if (kind.equals(SignalKind.INPUT) || kind.equals(SignalKind.OUTPUT)) {
+				states.add(Integer.toString(sig.getValue() == true ? 1 : 0));
+			}
+		}
+		addState(new CircuitState(time, states));
+	}
+	
 	public static void clear() {
 		results.clear();
 	}

@@ -63,6 +63,7 @@ public class DateiLeser {
 	 * vorhanden ist, dann wird null zurückgegeben. Das gleiche passiert auch,
 	 * wenn eine nicht vorhandene oder nicht lesbare Datei beim Konstruktor
 	 * angegeben wurde.
+	 * @return ergebnis
 	 */
 	public String gibZeile() {
 		String ergebnis;

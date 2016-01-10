@@ -19,7 +19,7 @@ public class CircuitTest {
 	@Before
 	public void setUp() {
 		signalList = new ArrayList<Signal>();
-		Circuit.setSignalList(signalList);
+		
 	}
 	
 	@Test
@@ -27,7 +27,7 @@ public class CircuitTest {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel1o.cir").toURI());
 		circuit = new Circuit(circuitFile);
-		signalList = Circuit.getSignalList();
+		signalList = circuit.getSignalList();
 		assertEquals(8, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("a", testSignal.getName());
@@ -42,7 +42,7 @@ public class CircuitTest {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel-latch.cir").toURI());
 		circuit = new Circuit(circuitFile);
-		signalList = Circuit.getSignalList();
+		signalList = circuit.getSignalList();
 		assertEquals(6, signalList.size());
 		Signal testSignal = signalList.get(3);
 		assertEquals("i1", testSignal.getName());
@@ -57,7 +57,7 @@ public class CircuitTest {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/_blume.cir").toURI());
 		circuit = new Circuit(circuitFile);
-		signalList = Circuit.getSignalList();
+		signalList = circuit.getSignalList();
 		assertEquals(21, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("warm", testSignal.getName());
@@ -72,7 +72,7 @@ public class CircuitTest {
 		File circuitFile = new File(ClassLoader.getSystemResource(
 				"circuits/beispiel-flipflop.cir").toURI());
 		circuit = new Circuit(circuitFile);
-		signalList = Circuit.getSignalList();
+		signalList = circuit.getSignalList();
 		assertEquals(19, signalList.size());
 		Signal testSignal = signalList.get(0);
 		assertEquals("a", testSignal.getName());
