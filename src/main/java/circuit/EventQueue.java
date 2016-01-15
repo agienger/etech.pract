@@ -11,13 +11,52 @@ import java.util.ListIterator;
  * @author Lion Gienger
  * @version 1.2 17.06.06
  */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
+/**
+ * @author Armin
+ *
+ */
 public class EventQueue {
+	/**
+	 * List der Events
+	 */
 	private LinkedList<Event> eventListe;
-	private  int runTime;
+	/**
+	 * Momentane Laufzeit der Queue
+	 */
+	private int runTime;
+
+	/**
+	 * Gibt an, ob die EventQueue bereits gestartet ist.
+	 */
 	private boolean isStarted = false;
 
 	/**
-	 * Der Konstruktor der Klasse EventQueue.
+	 * Im Konstruktor der Klasse EventQueue werden die Laufzeit und die Event
+	 * Liste initialisiert.
 	 * 
 	 */
 	public EventQueue() {
@@ -26,23 +65,32 @@ public class EventQueue {
 	}
 
 	/**
-	 * Die Methode setRunTime() setzt die zentrale Zeitvariable. <br>
+	 * Setzt die Laufzeit der Queue.
 	 * 
-	 * @param nTime
-	 *            neue Zeit als Integer
+	 * @param time
+	 *            Die zu setzende Laufzeit der Queue
 	 */
-	public void setRunTime(int nTime) throws RuntimeException {
-		runTime = nTime;
+	public void setRunTime(int time) throws RuntimeException {
+		runTime = time;
 	}
 
 	/**
-	 * Die Methode addEvent() sortiert ein Event in die EventQueue ein <br>
+	 * Gibt die aktuelle Laufzeit der Queue zurück.
+	 * 
+	 * @return Laufzeit der Queue
+	 */
+	public int getRunTime() {
+		return runTime;
+	}
+
+	/**
+	 * Sortiert ein Event in die EventQueue ein <br>
 	 * Neue Events werden dabei hinter andere Events mit gleicher Zeit
 	 * einsortiert. Außerdem werden Events, die zur gleichen Zeit dasselbe
 	 * Signal betreffen überschrieben.
 	 * 
 	 * @param e
-	 *            das einzusortierende Event
+	 *            das Event, das neu einsortiert werden soll.
 	 */
 	public void addEvent(Event e) {
 		ListIterator<Event> iterator = eventListe.listIterator();
@@ -58,7 +106,7 @@ public class EventQueue {
 				eventListe.remove(checkedEvent);
 				return;
 			}
-			if (checkedEvent.isLater(e)) {
+			if (checkedEvent.isEarlier(e)) {
 				iterator.previous();
 				iterator.add(e);
 				return;
@@ -67,8 +115,7 @@ public class EventQueue {
 	}
 
 	/**
-	 * Die Methode hasMore() prüft, ob in der EventQueue noch Elemente enthalten
-	 * sind.
+	 * Die Methode prüft, ob in der EventQueue noch Elemente enthalten sind.
 	 * 
 	 * @return true, wenn noch Elemente in der Liste stehen; ansonsten false.
 	 */
@@ -77,30 +124,18 @@ public class EventQueue {
 	}
 
 	/**
-	 * Die Methode getFirst() gibt das erste Event der EventQueue als
-	 * {@link Event} zurück.
+	 * Die Methode gibt das erste {@link circuit.Event} der EventQueue zurück.
 	 * 
-	 * @return erster Event
+	 * @return erstes Event
 	 */
 	public Event getFirst() {
 		return (Event) eventListe.getFirst();
 	}
 
 	/**
-	 * Die Methode getRunTime() gibt die aktuelle Zeit der Schaltung zurück.
+	 * Prüft, ob die EventQueue schon gestartet wurde. <br>
 	 * 
-	 * @return zentrale Schaltungszeit als Integer
-	 */
-	public  int getRunTime() {
-		return runTime;
-	}
-
-	/**
-	 * Die Methode isStarted() prüft, ob die EventQueue schon gestartet wurde. <br>
-	 * Die EventQueue wird durch {@link #start()} in {@link Event#propagate()}
-	 * gestartet.
-	 * 
-	 * @return true, wenn Initialisierungsphase abgeschlossen; ansonsten false
+	 * @return ist Eventqueue gestartet?
 	 */
 	public boolean isStarted() {
 		return isStarted;
@@ -111,28 +146,36 @@ public class EventQueue {
 		ListIterator<Event> iterator = eventListe.listIterator();
 		while (iterator.hasNext()) {
 			Event e = iterator.next();
-			output += e.getStartTime() + ":" + e.getSignal().getName() + ":"
+			output += e.getEventTime() + ":" + e.getSignal().getName() + ":"
 					+ e.getSignal().getValue() + ", ";
 		}
 		return output;
 	}
 
 	/**
-	 * Die Methode start() startet die EventQueue. <br>
+	 * Startet die EventQueue indem {@code isStarted} auf {@code true} gesetzt
+	 * wird.
 	 */
 	public void start() {
 		isStarted = true;
 	}
 
-	public int getListSize() {
-		return eventListe.size();
-	}
+	// public int getListSize() {
+	// return eventListe.size();
+	// }
 
+	/**
+	 * Löscht das Event aus der Liste
+	 * 
+	 * @param event Event
+	 */
 	public void remove(Event event) {
 		eventListe.remove(event);
-		
 	}
 
+	/**
+	 * @return Die EventListe
+	 */
 	public LinkedList<Event> getEventListe() {
 		return eventListe;
 	}

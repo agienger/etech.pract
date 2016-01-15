@@ -7,7 +7,7 @@ public class And extends Gatter {
 	}
 
 	/**
-	 * Diese Methode berechnet das Ausgangssignal des Nand Gatters In einer
+	 * Diese Methode berechnet das Ausgangssignal des {@code And} Gatters In einer
 	 * Schleife pruefen wir die Werte der Eingangssignale, falls eines davon
 	 * false ist, so geben wir false zurueck. Ansonsten geben wir true zurueck.
 	 * 

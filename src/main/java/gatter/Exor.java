@@ -6,6 +6,13 @@ public class Exor extends Gatter {
 		super(anzahl, wTime);
 	}
 	
+	/**
+	 * 
+	 * @see gatter.Gatter#calculateOutputValue()
+	 * Der Ausgang ist genau dann logisch {@code true} ist, wenn an einer ungeraden Anzahl von 
+	 * Eingängen {@code true}
+	 * anliegt und an den restlichen {@code false}. 
+	 */
 	@Override
 	public boolean calculateOutputValue() {
 		int trueCounter = 0;

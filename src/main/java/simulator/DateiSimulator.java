@@ -32,7 +32,7 @@ public class DateiSimulator {
 	private EventQueue queue;
 	/**
 	 * Liste aller Signale, die in {@link circuit.Circuit} erzeugt werden.
-	 * Zum einen wird diese benötigt, um alle Eingabe Signale in der {@link findSteadyState()} Methode 
+	 * Zum einen wird diese benötigt, um alle Eingabe Signale in der {@link #findSteadyState()} Methode 
 	 * zu initialisieren, zum anderen verwenden wir die Liste für die Ausgabe der Ergebnisse
 	 * (alle Input und Output Signale) und zuer Verifikation dieser gegen die erwarteten Ergbnisse, die wir 
 	 * aus der Ergebnisdatei erahlten. 
@@ -43,9 +43,10 @@ public class DateiSimulator {
 
 	/**
 	 * Im Konstruktor werden die beiden Member {@link #queue} und {@link signalList} intialisiert.
-	 * Danach werden in den Methoden {@link buildCircuit(File)} die Schaltung aus dem circuitFile aufgebaut, 
-	 * der stabile Ausgangszustand berechnet in der Methode {@link findSteadyState()} 
-	 * und schließlich werden die initialen Input Events über  eine Instanz von {@link circuit.EventProvider}
+	 * Danach werden Instanzen von {@link circuit.Circuit} erzeugt. also die Schaltung aus dem 
+	 * circuitFile aufgebaut, 
+	 * der stabile Ausgangszustand berechnet in der Methode {@link #findSteadyState()}.
+	 * Schließlich werden die initialen Input Events über eine Instanz von {@link circuit.EventProvider}
 	 * erzeugt.
 	 * 
 	 * @param circuitFile Die Datei, in welcher die Schaltkreis-Defintion gepflegt ist (.cir Datei)
@@ -85,7 +86,7 @@ public class DateiSimulator {
 
 	/**
 	 * Gibt den initialen Status der In- und Output Signalen auf System.out aus, falls 
-	 * {@link output()} {@code true} zurück gibt.
+	 * {@link #output()} {@code true} zurück gibt.
 	 */
 	private void outputInitialState() {
 		if (output()) {
@@ -105,7 +106,7 @@ public class DateiSimulator {
 	/**
 	 * Diese Methode startet die Simulation durch. Solange in der {@link #queue} 
 	 * noch Events stehen wird das erste Element der List genommen und daran die Methode 
-	 * {@see circuit.Event.#proagate()} ausgeführt.
+	 * {@link circuit.Event#propagate()} ausgeführt.
 	 * 
 	 */
 	public void simulate() {

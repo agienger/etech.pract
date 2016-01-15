@@ -5,6 +5,7 @@ import gatter.Gatter;
 import java.util.ArrayList;
 
 /**
+ * @author Lion Gienger
  * Die Klasse Event stellt Events zur Verfügung, die automatisch in eine vorher
  * durch {@link #setEventQueue(EventQueue)} zu spezifizierende EventQueue
  * geladen werden.
@@ -15,8 +16,6 @@ public class Event {
 	private Signal cSignal;
 	private int cTime;
 	private boolean cValue;
-
-	public static ArrayList<ArrayList<String>> inAndOutPuts = new ArrayList<ArrayList<String>>();
 
 	/**
 	 * Erzeugt ein neues Event und fügt es in die EventQueue an der richtigen
@@ -39,10 +38,9 @@ public class Event {
 
 	/**
 	 * Diese Methode setzt die EventQueue, die später von allen Events genutzt
-	 * werden soll.
+	 * werden.
 	 * 
-	 * @param e
-	 *            EventQueue
+	 * @param e Die EventQueue
 	 */
 	public static void setEventQueue(EventQueue e) {
 		eventQueue = e;
@@ -59,7 +57,9 @@ public class Event {
 
 	/**
 	 * Die Methode propagate() führt das Event aus. Dabei wird das Event aus der
-	 * EventQueue gelöscht und das eventbetreffende Signal geändert.
+	 * EventQueue gelöscht und die Queue-Laufzeit aktualisiert, sowie der Status des Signals geändert.
+	 * Danach werden alle Gatter neu berechnet, wenn entweder die EventQueue leer ist, oder der Zeitpunkt
+	 * des Events vor dem ersten ersten Event der Queue liegt.
 	 */
 	public void propagate() {
 		if (!eventQueue.isStarted()) {
@@ -68,8 +68,8 @@ public class Event {
 		eventQueue.remove(this);
 		eventQueue.setRunTime(cTime);
 		cSignal.setValue(cValue);
-		if (eventQueue.getListSize() == 0
-				|| cTime < eventQueue.getFirst().getStartTime()) {
+		if (eventQueue.getEventListe().size() == 0
+				|| cTime < eventQueue.getFirst().getEventTime()) {
 			Gatter.recalculate();
 		}
 	}
@@ -78,14 +78,14 @@ public class Event {
 	 * Diese Methode gibt den Zeitpunkt, an dem das Event ausgeführt werden soll
 	 * zurück.
 	 * 
-	 * @return Zeitpunkt
+	 * @return Teitpunkt des Events
 	 */
-	public int getStartTime() {
+	public int getEventTime() {
 		return cTime;
 	}
 
 	/**
-	 * Diese Methode gibt das Signal, das geändert werden soll zurück.
+	 * Diese Methode gibt das zu ändernde Signal zurück.
 	 * 
 	 * @return Signal
 	 */
@@ -95,7 +95,7 @@ public class Event {
 
 	/**
 	 * Diese Methode gibt den Wert zurück auf den dieses Event betreffende
-	 * Signal geändert werden soll.
+	 * Signal geändert wird.
 	 * 
 	 * @return Wert des Signals
 	 */
@@ -103,17 +103,23 @@ public class Event {
 		return cValue;
 	}
 
-	public String toString() {
-		return ("Signal " + cSignal.getName() + " wird zum Zeitpunkt " + cTime
-				+ " auf " + cValue + " geändert");
+	/**
+	 * Berchnet, ob das zu vergleichende Event früher ist als das aktuelle
+	 * @param e Event
+	 * @return Is früher?
+	 */
+	public boolean isEarlier(Event e) {
+		return (e.getEventTime() < this.cTime);
 	}
 
-	public boolean isLater(Event e) {
-		return (e.getStartTime() < this.cTime);
-	}
-
+	/**
+	 * Prüft, ob das aktuell Event mit dem Event e überschrieben werden soll, . Dies ist der Fall, 
+	 * wenn beide Events, das selbe Signal betreffen und die Zeiten gleich sind
+	 * @param e Event
+	 * @return Soll überschreiben werden?
+	 */
 	public boolean willBeOverwritten(Event e) {
 		return (this.cSignal.getName().equals(e.getSignal().getName()) && this.cTime == e
-				.getStartTime());
+				.getEventTime());
 	}
 }

@@ -17,6 +17,7 @@ public class Nand extends Gatter{
 	 * Feldern und Wartezeit wTime
 	 * 
 	 * @param anzahl Anzahl der Eingangssignale
+	 * @param  wTime Wartezeit
 	 */
 	public Nand(int anzahl, int wTime) {
 		super(anzahl, wTime);

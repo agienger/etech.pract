@@ -51,6 +51,7 @@ public class DateiLeser {
 
 	/**
 	 * Prüfe, ob noch eine Zeile lesbar ist.
+	 * @return sind noch mehr Zeilen lesbar?
 	 */
 	public boolean nochMehrZeilen() {
 		if (!lesenVersucht)

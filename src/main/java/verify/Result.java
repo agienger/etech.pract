@@ -40,6 +40,7 @@ public class Result {
 	 * Speichert den Status der Schaltung zum Zeitpunkt {@code time} in die statische Liste 
 	 * {@link verify.Result#results}, siehe {@link verify.Result}
 	 * @param time Zeitpunkt der Schaltung
+	 * @param signalList Signal Liste
 	 */
 	public static void storeCurrentState(int time, ArrayList<Signal> signalList) {
 		ArrayList<String> states = new ArrayList<String>();

@@ -6,34 +6,41 @@ import circuit.Event;
 import circuit.Signal;
 
 /**
- * Basisklasse Gatter
+ * Basisklasse Gatter aus der alle Gatter abgeleitet werden.
  * 
  * @author Lion Gienger
- */
-/**
- * @author Lion Gienger August 2015
- *
  */
 public abstract class Gatter {
 
 	/**
-	 * inputSignalArray Ist ein arary von Signalen mit allen Inputsignales
+	 * Array der Inputsignalen
 	 * dieses Gatters
 	 */
 	private Signal[] inputSignalArray;
 	/**
-	 * output ist das Ausgangssignal des Gatters
+	 * Das Ausgangssignal des Gatters
 	 */
 	private Signal output;
 
+	/**
+	 * Die Verzögerung des Gatters
+	 */
 	private int waitTime;
+	
+	/**
+	 * Der zuletzt berechnete Output-Wert des Gatters
+	 */
 	protected boolean lastCalculatedValue = false;
 
-	public static ArrayList<Gatter> globalGatterList = new ArrayList<Gatter>();
+	
+	/**
+	 * Statische Liste aller Gatter der Schaltung
+	 */
+	private static ArrayList<Gatter> globalGatterList = new ArrayList<Gatter>();
 
 	/**
 	 * Konstruktor der Klasse Gatter, initialisiert ein Signal Array mit {@code anzahl}
-	 * Feldern und Wartezeit {@code wTime}
+	 * Feldern und Wartezeit {@code wTime}.
 	 * 
 	 * @param anzahl Anzahl der Eingänge
 	 * @param wTime Delay Time des Gatters
@@ -45,8 +52,8 @@ public abstract class Gatter {
 	}
 
 	/**
-	 * Schaltungsaufbau: Definiert das inputNummer-te Eingangssignal
-	 * inputSignal. Ausserdem weist die Methode diesem Signal dieses Gatter als
+	 * Beim Schaltungsaufbau wird hier das n-te Eingangssignal
+	 * inputSignal definiert. Außerdem weist die Methode diesem Signal dieses Gatter als
 	 * Ziel zu.
 	 * 
 	 * @param inputNummer Nummer des Eingangs
@@ -58,17 +65,18 @@ public abstract class Gatter {
 	}
 
 	/**
-	 * Schaltungsaufbau: Setzt das Ausgangssignal signal
+	 * Beim Schaltungsaufbau wird hier das Ausgangssignal signal gesetzt.
 	 * 
 	 * @param s Ausgangssignal
 	 */
 	public void setOutput(Signal s) {
 		output = s;
-
 	}
 
 	/**
-	 * Berechnet den Wert des Ausgangssignals 
+	 * Berechnet den Wert des Ausgangssignals. Wenn die Eventque noch nicht gestartet wurde (Einschwingphase),
+	 * So wird nur dann ein neues Event erzeugt, wenn sich der Wett des Signals geändert hat.
+	 * 
 	 * 
 	 */
 	public void setOutputValue() {
@@ -88,28 +96,33 @@ public abstract class Gatter {
 
 	}
 
+	/**
+	 * @return Das Array der Eingsngssignalen.
+	 */
 	public Signal[] getInputSignalArray() {
 		return inputSignalArray;
 	}
 
 	/**
-	 * Dies Methode berechnet das Ausgangssignal des Gatters. Wenn null zurück
-	 * kommt, wird das output Signal nicht gesetzt
+	 * Abstrakte Methode der Gatter-spezifischen Berechnung das Ausgangssignal des Gatters.
 	 * 
 	 * @return the output value
 	 */
 	public abstract boolean calculateOutputValue();
 
+	
 	public boolean getLastCalculatedValue() {
 		return lastCalculatedValue;
 	}
 
+	/**
+	 * Diese Methode berechnet alle Gatter der Gatterliste neu und 
+	 */
 	public static void recalculate() {
 		for (Gatter gatter : globalGatterList) {
 			gatter.getClass();
 			gatter.setOutputValue();
 		}
-
 	}
 
 	public Signal getOutput() {

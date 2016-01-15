@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 import file.DateiLeser;
 
+/**
+ * @author Lion Gienger
+ * Erzeugt eine EventQueu, die aus dem Eventfile gelesen wird.
+ */
 public class EventProvider {
 
 	public EventProvider(File eventFile, ArrayList<Signal> signalList) {
@@ -26,6 +30,11 @@ public class EventProvider {
 		return Event.getEventQueue();
 	}
 
+	/**
+	 * Wandet Strin nach boolean um ({@code 1 = true, 0 = false})
+	 * @param value Wert des Signals als String
+	 * @return Wert als booelan
+	 */
 	private boolean toBoolean(String value) {
 		if (value.equals("1")) {
 			return true;

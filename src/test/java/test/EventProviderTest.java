@@ -26,7 +26,7 @@ public class EventProviderTest {
 		EventQueue queue = new EventQueue();
 		Event.setEventQueue(queue);
 		EventProvider ep = new EventProvider(eventFile, signalList);
-		assertEquals(12, ep.getEventqueue().getListSize());
+		assertEquals(12, ep.getEventqueue().getEventListe().size());
 	}
 
 }

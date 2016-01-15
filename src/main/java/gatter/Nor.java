@@ -9,14 +9,14 @@ package gatter;
  * @author Lion Gienger August 2015
  *
  */
-public class Nor extends Gatter{
-
+public class Nor extends Gatter {
 
 	/**
 	 * Konstruktor der Klasse Nor, initialisiert ein Signal Array mit anzahl
 	 * Feldern und Wartezeit wTime
 	 * 
-	 * @param anzahl
+	 * @param anzahl Anzahl der Inputsignale
+	 * @param wTime Wartezeit
 	 */
 	public Nor(int anzahl, int wTime) {
 		super(anzahl, wTime);
@@ -29,7 +29,7 @@ public class Nor extends Gatter{
 	 * 
 	 * @return output value
 	 */
-	
+
 	public boolean calculateOutputValue() {
 		for (int i = 0; i < getInputSignalArray().length; i++) {
 			if (getInputSignalArray()[i].getValue()) {
@@ -38,7 +38,5 @@ public class Nor extends Gatter{
 		}
 		return true;
 	}
-
-	
 
 }

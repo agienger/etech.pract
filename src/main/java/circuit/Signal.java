@@ -105,7 +105,7 @@ public class Signal {
 	 * merken wir uns, wie oft das Signal bereits geändert wurde. Wenn die Anzahl der Änderungen 
 	 * {@code COUNTER_PRE_MAX} übersteigt werden die Gatter nicht mehr geändert.
 	 * <br> 2. Wenn die EventQueue bereits gestartet ist, werden die Signale nicht sofort weitergeschaltet, 
-	 * sondern die Gatter werden über die {@see circuit.Event.#propagate()} 
+	 * sondern die Gatter werden über die {@link circuit.Event#propagate()} 
 	 * Methode für jedes neue Event neu berechnet.
 	 * 
 	 * @param value Wert des Signals
