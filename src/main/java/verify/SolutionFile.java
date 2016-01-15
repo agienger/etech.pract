@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import file.DateiLeser;
+import simulator.DateiLeser;
 
 public class SolutionFile {
 

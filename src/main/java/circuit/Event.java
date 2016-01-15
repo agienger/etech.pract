@@ -2,8 +2,6 @@ package circuit;
 
 import gatter.Gatter;
 
-import java.util.ArrayList;
-
 /**
  * @author Lion Gienger
  * Die Klasse Event stellt Events zur Verfügung, die automatisch in eine vorher

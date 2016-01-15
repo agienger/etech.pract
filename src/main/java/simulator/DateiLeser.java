@@ -1,4 +1,4 @@
-package file;
+package simulator;
 
 import java.io.FileReader;
 import java.io.BufferedReader;

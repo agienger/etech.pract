@@ -3,7 +3,7 @@ package circuit;
 import java.io.File;
 import java.util.ArrayList;
 
-import file.DateiLeser;
+import simulator.DateiLeser;
 
 /**
  * @author Lion Gienger

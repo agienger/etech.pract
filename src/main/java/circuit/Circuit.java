@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import file.DateiLeser;
+import simulator.DateiLeser;
 import gatter.And;
 import gatter.Buf;
 import gatter.Exor;
@@ -44,7 +44,7 @@ public class Circuit {
 	/**
 	 * Folgende Schritte werden im Konstruktor des Circuits durchgeführt:
 	 * <br> 1. Initialisieren der SignalListe
-	 * <br> 2. Erzeugen des fileReaders als Instanz von {@link file.DateiLeser}
+	 * <br> 2. Erzeugen des fileReaders als Instanz von {@link simulator.DateiLeser}
 	 * <br> 3. In einer Schleife werden nun alle Zeilen der Eingabedatei ausgelesen
 	 * <br> 4. Alle Zeilen die mit einem {@code #} beginnen oder die nur whitespaces beinhalten werden ignoriert.
 	 * <br> 5. Zeilen die mit dem keyword {@code input} beginnen, werden als input Signale in die Signalliste geschrieben.
