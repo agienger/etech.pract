@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.params=dateiname
+comment0.target=DateiLeser(java.lang.String)
+comment0.text=\r\n\ Erzeuge\ einen\ DateiLeser.\ Es\ gibt\ nur\ diesen\ einen\ Konstuktor,\ der\r\n\ unbedingt\ einen\ Parameter\ braucht\r\n\ \r\n\ @param\ dateiname\r\n\ \ \ \ \ \ \ \ \ \ \ \ ist\ ein\ String,\ der\ den\ Dateinamen\ beschreibt.\ Sollte\ ein\ Pfad\r\n\ \ \ \ \ \ \ \ \ \ \ \ erforderlich\ sein,\ um\ auf\ die\ Datei\ zuzugreifen,\ dann\ muss\r\n\ \ \ \ \ \ \ \ \ \ \ \ dieser\ Pfad\ mit\ im\ String\ enthalten\ sein\ und\ sollte\ dann\ den\r\n\ \ \ \ \ \ \ \ \ \ \ \ Betriebssystem\ Konventionen\ gen\u00FCgen.\ Beispiele\:\r\n\ \ \ \ \ \ \ \ \ \ \ \ <UL>\r\n\ \ \ \ \ \ \ \ \ \ \ \ <LI>DateiLeser("Schaltung.txt")</LI>\r\n\ \ \ \ \ \ \ \ \ \ \ \ <LI>DateiLeser("C\:\\Temp\\inputs.liste");</LI>\r\n\ \ \ \ \ \ \ \ \ \ \ \ </UL>\r\n
+comment1.params=
+comment1.target=boolean\ nochMehrZeilen()
+comment1.text=\r\n\ Pr\u00FCfe,\ ob\ noch\ eine\ Zeile\ lesbar\ ist.\r\n\ @return\ sind\ noch\ mehr\ Zeilen\ lesbar?\r\n
+comment2.params=
+comment2.target=java.lang.String\ gibZeile()
+comment2.text=\r\n\ Gib\ die\ n\u00E4chste\ Zeile\ der\ Datei\ als\ String\ zur\u00FCck.\ Wenn\ keine\ Zeile\ mehr\r\n\ vorhanden\ ist,\ dann\ wird\ null\ zur\u00FCckgegeben.\ Das\ gleiche\ passiert\ auch,\r\n\ wenn\ eine\ nicht\ vorhandene\ oder\ nicht\ lesbare\ Datei\ beim\ Konstruktor\r\n\ angegeben\ wurde.\r\n\ @return\ ergebnis\r\n
+comment3.params=
+comment3.target=void\ leseVersuch()
+numComments=4

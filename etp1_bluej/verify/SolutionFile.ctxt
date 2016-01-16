@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=fileName
+comment0.target=SolutionFile(java.lang.String)
+comment1.params=file
+comment1.target=java.util.ArrayList\ getExpectedSolutions(java.io.File)
+comment2.params=file
+comment2.target=java.util.ArrayList\ getSolutionRowsFromFile(java.io.File)
+numComments=3

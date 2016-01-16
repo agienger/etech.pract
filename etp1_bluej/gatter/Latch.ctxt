@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.params=wTime
+comment0.target=Latch(int)
+comment1.params=
+comment1.target=boolean\ isFlipFlopActive()
+comment1.text=\r\n\ \r\n\ @see\ teil3.FlipFlop\#calculateNewOutput()\ Beim\ Latch\ wird\ nur\ dann\ ein\r\n\ output\ Signal\ gesetzt,\ wenn\ der\ Takt\ auf\ true\ steht\r\n
+numComments=2

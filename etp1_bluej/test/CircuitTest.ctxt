@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=void\ setUp()
+comment1.params=
+comment1.target=void\ testBeispiel1o()
+comment2.params=
+comment2.target=void\ testLatch()
+comment3.params=
+comment3.target=void\ testBlume()
+comment4.params=
+comment4.target=void\ testFlipFlop()
+numComments=5

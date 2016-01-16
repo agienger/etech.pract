@@ -1,0 +1,23 @@
+#BlueJ class context
+comment0.params=name
+comment0.target=Signal(java.lang.String)
+comment0.text=\r\n\ Der\ Names\ des\ Signals\ wird\ gesetzt\ und\ \r\n\ die\ GatterListe\ des\ Signals\ wird\ initialisiert.\r\n\ @param\ name\ Name\ des\ Signals\r\n
+comment1.params=
+comment1.target=boolean\ getValue()
+comment1.text=\r\n\ Gibt\ den\ Signalwert\ zur\u00FCck.\r\n\ @return\ der\ Wert\ des\ Signals\r\n
+comment2.params=
+comment2.target=java.lang.String\ getName()
+comment2.text=\r\n\ Gibt\ den\ Signalnamen\ zur\u00FCck.\r\n\ @return\ der\ Name\ des\ Signals\r\n
+comment3.params=signalName
+comment3.target=void\ setName(java.lang.String)
+comment3.text=\r\n\ Setzt\ den\ Namen\ des\ Signals\r\n\ @param\ signalName\ Name\ des\ Signals\r\n\ \r\n
+comment4.params=value
+comment4.target=void\ setValue(boolean)
+comment4.text=\r\n\ Setzt\ den\ aktuellen\ Wert\ des\ Signals.\ Wir\ unterscheiden\ 2\ F\u00E4lle\:\r\n\ <br>\ 1.\ In\ der\ Einschwingphase\ ({@code\ Event.getEventQueue().getRunTime()\ \=\=\ 0})\ wird\ sofort\ f\u00FCr\ alle\r\n\ angeschlossenen\ Gatter\ der\ Output\ des\ Gatters\ neu\ berechnet.\ Wegenn\ m\u00F6glicher\ R\u00FCckkopplungen\ \r\n\ merken\ wir\ uns,\ wie\ oft\ das\ Signal\ bereits\ ge\u00E4ndert\ wurde.\ Wenn\ die\ Anzahl\ der\ \u00C4nderungen\ \r\n\ {@code\ COUNTER_PRE_MAX}\ \u00FCbersteigt\ werden\ die\ Gatter\ nicht\ mehr\ ge\u00E4ndert.\r\n\ <br>\ 2.\ Wenn\ die\ EventQueue\ bereits\ gestartet\ ist,\ werden\ die\ Signale\ nicht\ sofort\ weitergeschaltet,\ \r\n\ sondern\ die\ Gatter\ werden\ \u00FCber\ die\ {@link\ circuit.Event\#propagate()}\ \r\n\ Methode\ f\u00FCr\ jedes\ neue\ Event\ neu\ berechnet.\r\n\ \r\n\ @param\ value\ Wert\ des\ Signals\r\n
+comment5.params=signalList\ sigName
+comment5.target=Signal\ getSignalFromList(java.util.ArrayList,\ java.lang.String)
+comment5.text=\r\n\ Hilfsmethode,\ sucht\ ein\ Signal\ aus\ der\ Signal\ Liste\ und\ gibt\ dieses\ zur\u00FCck.\r\n\ @param\ signalList\ Liste\ der\ Signale\r\n\ @param\ sigName\ Name\ des\ Signals\r\n\ @return\ Signal\ aus\ der\ Signalliste,\ falls\ gefunden,\ ansonsten\ {@code\ null}\r\n
+comment6.params=signalList
+comment6.target=void\ setSignalList(java.util.ArrayList)
+comment6.text=\r\n\ @param\ signalList\ List\ der\ Signales\r\n
+numComments=7

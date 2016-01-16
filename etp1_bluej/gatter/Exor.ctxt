@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.params=anzahl\ wTime
+comment0.target=Exor(int,\ int)
+comment1.params=
+comment1.target=boolean\ calculateOutputValue()
+comment1.text=\r\n\ \r\n\ @see\ gatter.Gatter\#calculateOutputValue()\r\n\ Der\ Ausgang\ ist\ genau\ dann\ logisch\ {@code\ true}\ ist,\ wenn\ an\ einer\ ungeraden\ Anzahl\ von\ \r\n\ Eing\u00E4ngen\ {@code\ true}\r\n\ anliegt\ und\ an\ den\ restlichen\ {@code\ false}.\ \r\n
+numComments=2

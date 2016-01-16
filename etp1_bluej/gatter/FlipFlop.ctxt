@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=wTime
+comment0.target=FlipFlop(int)
+comment0.text=\r\n\ Takteingang\ ist\ der\ erste,\ Dateneingang\ ist\ der\ zweite\ Eingang\r\n
+comment1.params=
+comment1.target=boolean\ getTakt()
+comment2.params=
+comment2.target=boolean\ isFlipFlopActive()
+comment3.params=
+comment3.target=boolean\ calculateOutputValue()
+numComments=4

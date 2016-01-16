@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=
+comment0.target=java.util.Collection\ data()
+comment1.params=s1V\ s2V\ s3V\ expectedV
+comment1.target=ExOrTest(boolean,\ boolean,\ boolean,\ boolean)
+comment2.params=
+comment2.target=void\ exorTest()
+numComments=3

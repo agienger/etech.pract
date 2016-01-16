@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.params=testFall
+comment0.target=DateiSimulator(java.lang.String)
+comment0.text=\r\n\ Im\ Konstruktor\ werden\ zun\u00E4chst\ f\u00FCr\ den\ Testfall\ {@code\ testFall}\ die\ Files\ geladen\ und\ \r\n\ dann\ die\ beiden\ Member\ {@link\ \#queue}\ und\ {@link\ signal\r\n\ List}\ intialisiert.\ Danach\ werden\ Instanzen\ von\ {@link\ circuit.Circuit}\r\n\ erzeugt.\ also\ die\ Schaltung\ aus\ dem\ circuitFile\ aufgebaut,\ der\ stabile\r\n\ Ausgangszustand\ berechnet\ in\ der\ Methode\ {@link\ \#findSteadyState()}.\r\n\ Schlie\u00DFlich\ werden\ die\ initialen\ Input\ Events\ \u00FCber\ eine\ Instanz\ von\r\n\ {@link\ circuit.EventProvider}\ erzeugt.\r\n\ \r\n\ @param\ testFall\ Der\ zu\ simulierende\ Testfall\r\n\ \r\n
+comment1.params=
+comment1.target=void\ findSteadyState()
+comment1.text=\r\n\ Setzt\ zum\ Zeitpunkt\ 0\ alle\ Input\ Signale\ auf\ {@code\ false},\ au\u00DFer\r\n\ {@code\ nichtreset},\ das\ auf\ {@code\ true}\ gesetzt\ wird.\ Der\ erste\ Status\r\n\ der\ Signale\ wird\ auch\ ausgegeben\ und\ abgespeichert\ (f\u00FCr\ die\r\n\ Verifikation).\r\n
+comment2.params=
+comment2.target=void\ outputInitialState()
+comment2.text=\r\n\ Gibt\ den\ initialen\ Status\ der\ In-\ und\ Output\ Signalen\ auf\ System.out\ aus,\r\n\ falls\ {@link\ \#output()}\ {@code\ true}\ zur\u00FCck\ gibt.\r\n
+comment3.params=
+comment3.target=void\ simulate()
+comment3.text=\r\n\ Diese\ Methode\ startet\ die\ Simulation\ durch.\ Solange\ in\ der\ {@link\ \#queue}\r\n\ noch\ Events\ stehen\ wird\ das\ erste\ Element\ der\ List\ genommen\ und\ daran\ die\r\n\ Methode\ {@link\ circuit.Event\#propagate()}\ ausgef\u00FChrt.\r\n\ \r\n
+comment4.params=
+comment4.target=boolean\ output()
+comment4.text=\r\n\ @return\ Wenn\ die\ System\ property\ {@code\ OUTPUT}\ auf\ {@code\ true}\ gesetzt\r\n\ \ \ \ \ \ \ \ \ ist,\ wird\ {@code\ true}\ zur\u00FCckgegeben,\ ansonsten\ {@code\ false}.\r\n
+comment5.params=
+comment5.target=boolean\ verify()
+comment5.text=\r\n\ @return\ Wenn\ die\ System\ property\ {@code\ VERIFY}\ auf\ {@code\ true}\ gesetzt\r\n\ \ \ \ \ \ \ \ \ ist,\ wird\ {@code\ true}\ zur\u00FCckgegeben,\ ansonsten\ {@code\ false}.\r\n
+comment6.params=args
+comment6.target=void\ main(java.lang.String[])
+comment6.text=\r\n\ Die\ {@code\ main}\ Methode\ startet\ die\ Simulation\ der\ Schaltung(en),\r\n\ abh\u00E4ngig\ vom\ Einagbewert.\r\n\ \r\n\ @param\ args\r\n\ \ \ \ \ \ \ \ \ \ \ \ Es\ wird\ ein\ Eingabewert\ {@code\ args[0]}\ ausgewertet,\ Wenn\ der\r\n\ \ \ \ \ \ \ \ \ \ \ \ auf\ {@code\ all}\ gesetzt\ ist,\ werden\ alle\ Beispiele\ aus\ der\r\n\ \ \ \ \ \ \ \ \ \ \ \ Liste\ {@code\ examples}\ ausgef\u00FChrt.\ Ansonsten\ wird\ ein\ Beispiel\r\n\ \ \ \ \ \ \ \ \ \ \ \ aus\ der\ Liste\ {@code\ examples}\ erwartet\ und\ berechnet.\r\n\ \r\n\ @throws\ FileNotFoundException\r\n\ @throws\ URISyntaxException\r\n
+comment7.params=
+comment7.target=void\ run()
+numComments=8

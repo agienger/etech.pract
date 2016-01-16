@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.params=wTime
+comment0.target=FF(int)
+comment1.params=
+comment1.target=boolean\ isFlipFlopActive()
+comment2.params=
+comment2.target=void\ setOutputValue()
+comment3.params=negOutput
+comment3.target=void\ setNegOutput(circuit.Signal)
+numComments=4

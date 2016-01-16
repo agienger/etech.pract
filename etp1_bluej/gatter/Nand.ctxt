@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.params=anzahl\ wTime
+comment0.target=Nand(int,\ int)
+comment0.text=\r\n\ Konstruktor\ der\ Klasse\ Nand,\ initialisiert\ ein\ Signal\ Array\ mit\ anzahl\r\n\ Feldern\ und\ Wartezeit\ wTime\r\n\ \r\n\ @param\ anzahl\ Anzahl\ der\ Eingangssignale\r\n\ @param\ \ wTime\ Wartezeit\r\n
+comment1.params=
+comment1.target=boolean\ calculateOutputValue()
+comment1.text=\r\n\ Diese\ Methode\ berechnet\ das\ Ausgangssignal\ des\ Nand\ Gatters\ In\ einer\r\n\ Schleife\ pruefen\ wir\ die\ Werte\ der\ Eingangssignale,\ falls\ eines\ davon\r\n\ false\ ist,\ so\ geben\ wir\ true\ zurueck.\ Ansonsten\ geben\ wir\ false\ zurueck.,\r\n\ \r\n\ @return\ output\ value\r\n
+numComments=2

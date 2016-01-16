@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.params=value
+comment0.target=boolean\ toBoolean(java.lang.String)
+comment0.text=\r\n\ Wandet\ Strin\ nach\ boolean\ um\ ({@code\ 1\ \=\ true,\ 0\ \=\ false})\r\n\ @param\ value\ Wert\ des\ Signals\ als\ String\r\n\ @return\ Wert\ als\ booelan\r\n
+numComments=1

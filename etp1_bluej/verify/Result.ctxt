@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=newState
+comment0.target=void\ addState(circuit.CircuitState)
+comment1.params=newState
+comment1.target=boolean\ stateHasChanged(circuit.CircuitState)
+comment2.params=time\ signalList
+comment2.target=void\ storeCurrentState(int,\ java.util.ArrayList)
+comment2.text=\r\n\ Speichert\ den\ Status\ der\ Schaltung\ zum\ Zeitpunkt\ {@code\ time}\ in\ die\ statische\ Liste\ \r\n\ {@link\ verify.Result\#results},\ siehe\ {@link\ verify.Result}\r\n\ @param\ time\ Zeitpunkt\ der\ Schaltung\r\n\ @param\ signalList\ Signal\ Liste\r\n
+comment3.params=
+comment3.target=void\ clear()
+numComments=4
