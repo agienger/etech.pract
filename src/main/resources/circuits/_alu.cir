@@ -1,0 +1,210 @@
+#  4-Bit Additions/Subtraktions-Rechenwerk mit 4Bit Ergebnisregister
+
+# Operanten
+Input a3,a2,a1,a0;
+Input b3,b2,b1,b0;
+
+#Steuereingang (1-Subtraktion (a-b), 0-Addition (a+b))
+Input s;
+
+#Taktsignal des Ergebnisregisters
+Input c;
+
+#Ausgang des Rechenwerks
+Output e4,e3,e2,e1,e0;
+
+#Registerausgang
+Output re3,re2,re1,re0;
+
+Signal i1,i2,i3,i4;
+Signal i5,i6,i7,i8;
+#überträge der Volladdierer
+Signal u1,u2,u3;
+
+#Volladierer
+Circuit VollAdder;
+
+Input a,b,cin;
+Output s,cout;
+Signal i1, i2;
+Signal i3;
+
+#Halbaddierer
+Circuit HalfAdder;
+
+Input a,b;
+Output c,s;
+
+Gate g1 AND2 Delay 4;
+Gate g2 EXOR2 Delay 8;
+
+g1.i1=a;
+g1.i2=b;
+g1.o=c;
+g2.i1=a;
+g2.i2=b;
+g2.o=s;
+
+Gate g4 HalfAdder;
+Gate g5 HalfAdder;
+Gate g6 OR2 Delay 4;
+
+g4.a = a;
+g4.b = b;
+g4.c = i1;
+g4.s = i2;
+g5.a = i2;
+g5.b = cin;
+g5.c = i3;
+g5.s = s;
+g6.i1 = i1;
+g6.i2 = i3;
+g6.o = cout;
+
+
+#Multiplexer (s=0 schaltet a auf o, s=1 schaltet b auf o)
+Circuit Mux;
+
+Input a,b,s;
+Signal i1,i2,i3,i4;
+Output o;
+
+Gate g1 AND2 Delay 4;
+Gate g2 AND2 Delay 4;
+Gate g3 OR2 Delay 4;
+Gate g4 NOT Delay 2;
+Gate g5 BUF Delay 2;
+
+g1.i1=a;
+g1.i2=i1;
+g1.o=i3;
+g2.i1=b;
+g2.i2=i2;
+g2.o=i4;
+g3.i1=i3;
+g3.i2=i4;
+g3.o=o;
+g4.i1=s;
+g4.o=i1;
+g5.i1=s;
+g5.o=i2;
+
+# 4 Bit Register
+Circuit Register
+
+Input a0,a1,a2,a3;
+Input c;
+Output o0,o1,o2,o3;
+Output no0,no1,no2,no3;
+
+Gate f1 FF Delay 8
+Gate f2 FF Delay 8
+Gate f3 FF Delay 8
+Gate f4 FF Delay 8
+
+f1.c=c;
+f1.d=a0;
+f1.q=o0;
+f1.nq=no0;
+f2.c=c;
+f2.d=a1;
+f2.q=o1;
+f2.nq=no1;
+f3.c=c;
+f3.d=a2;
+f3.q=o2;
+f3.nq=no2;
+f4.c=c;
+f4.d=a3;
+f4.q=o3;
+f4.nq=no3;
+
+End;
+
+
+Gate v1 VollAdder;
+Gate v2 VollAdder;
+Gate v3 VollAdder;
+Gate v4 VollAdder;
+
+Gate m1 Mux;
+Gate m2 Mux;
+Gate m3 Mux;
+Gate m4 Mux;
+
+Gate n1 NOT Delay 2;
+Gate n2 NOT Delay 2;
+Gate n3 NOT Delay 2;
+Gate n4 NOT Delay 2;
+
+
+Gate rs Register;
+
+n1.i1=b0;
+n1.o=i1;
+
+n2.i1=b1;
+n2.o=i2;
+
+n3.i1=b2;
+n3.o=i3;
+
+n4.i1=b3;
+n4.o=i4;
+
+m1.a=b0
+m1.b=i1
+m1.o=i5
+m1.s=s
+
+m2.a=b1
+m2.b=i2
+m2.o=i6
+m2.s=s
+
+m3.a=b2
+m3.b=i3
+m3.o=i7
+m3.s=s
+
+m4.a=b3
+m4.b=i4
+m4.o=i8
+m4.s=s
+
+
+v1.a=a0;
+v1.b=i5;
+v1.cin=s;
+v1.s=e0;
+v1.cout=u1;
+
+v2.a=a1;
+v2.b=i6;
+v2.cin=u1;
+v2.s=e1;
+v2.cout=u2;
+
+v3.a=a2;
+v3.b=i7;
+v3.cin=u2;
+v3.s=e2;
+v3.cout=u3;
+
+v4.a=a3;
+v4.b=i8;
+v4.cin=u3;
+v4.s=e3;
+v4.cout=e4;
+
+rs.c=c;
+
+rs.a0=e0;
+rs.a1=e1;
+rs.a2=e2;
+rs.a3=e3;
+
+rs.o0=re0;
+rs.o1=re1;
+rs.o2=re2;
+rs.o3=re3;

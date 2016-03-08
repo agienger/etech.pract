@@ -1,0 +1,83 @@
+#  Events für 4-Bit Additions/Subtraktions-Rechenwerk
+
+# Zahl a (4)
+
+100 a0 0
+100 a1 0
+100 a2 1
+100 a3 0
+
+# Zahl b (3)
+
+100 b0 1
+100 b1 1
+100 b2 0
+100 b3 0
+
+#Steuereingang und Taktsignal 
+
+100 s 0
+
+150 c 1
+155 c 0
+
+200 s 1
+
+250 c 1
+255 c 0
+
+
+# Zahl a (6)
+
+300 a0 0
+300 a1 1
+300 a2 1
+300 a3 0
+
+# Zahl b (3)
+
+300 b0 1
+300 b1 1
+300 b2 0
+300 b3 0
+
+#Steuereingang und Taktsignal 
+
+300 s 0
+
+350 c 1
+355 c 0
+
+400 s 1
+
+450 c 1
+455 c 0
+
+
+# Zahl a (4)
+
+500 a0 0
+500 a1 0
+500 a2 1
+500 a3 0
+
+# Zahl b (-3) oder (13)
+
+500 b0 1
+500 b1 0
+500 b2 1
+500 b3 1
+
+#Steuereingang und Taktsignal 
+
+500 s 0
+
+550 c 1
+555 c 0
+
+600 s 1
+
+650 c 1
+655 c 0
+
+

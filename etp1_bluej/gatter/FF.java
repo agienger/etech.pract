@@ -14,29 +14,31 @@ public class FF extends FlipFlop {
 	}
 
 	@Override
-	protected  boolean isFlipFlopActive() {
+	protected boolean isFlipFlopActive() {
 		boolean risingEdge = (previousTakt == false && this.getTakt() == true);
 		previousTakt = this.getTakt();
 		return risingEdge;
 	}
-	
+
 	@Override
-	public  void setOutputValue() {
+	public void setOutputValue() {
 		boolean calculatedValue = calculateOutputValue();
 		if (!Event.getEventQueue().isStarted()) {
 			super.getOutput().setValue(calculatedValue);
-			negOutput.setValue(!(calculatedValue));
+			if (negOutput != null) {
+				negOutput.setValue(!(calculatedValue));
+			}
 			super.lastCalculatedValue = calculatedValue;
-		} else 			if (calculatedValue != lastCalculatedValue) {
-				lastCalculatedValue = calculatedValue;
-				new Event(super.getOutput(),
-						Event.getEventQueue().getRunTime() + super.getWaitTime(),
-						calculatedValue);
-				new Event(negOutput,
-						Event.getEventQueue().getRunTime() + super.getWaitTime(),
-						!(calculatedValue));
+		} else if (calculatedValue != lastCalculatedValue) {
+			lastCalculatedValue = calculatedValue;
+			new Event(super.getOutput(), Event.getEventQueue().getRunTime()
+					+ super.getWaitTime(), calculatedValue);
+			if (negOutput != null) {
+			new Event(negOutput, Event.getEventQueue().getRunTime()
+					+ super.getWaitTime(), !(calculatedValue));
 			}
 		}
+	}
 
 	public void setNegOutput(Signal negOutput) {
 		this.negOutput = negOutput;

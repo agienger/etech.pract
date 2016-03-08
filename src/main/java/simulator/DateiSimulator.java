@@ -43,25 +43,26 @@ public class DateiSimulator {
 	private Circuit circuit;
 	private File circuitFile;
 	private File eventFile;
-	private File solutionFile;
-	private String beispielName;
+	private static File solutionFile;
+	private static boolean output = true;
 
 	/**
-	 * Im Konstruktor werden zunächst für den Testfall {@code testFall} die Files geladen und 
-	 * dann die beiden Member {@link #queue} und {@link signal
-	 * List} intialisiert. Danach werden Instanzen von {@link circuit.Circuit}
-	 * erzeugt. also die Schaltung aus dem circuitFile aufgebaut, der stabile
-	 * Ausgangszustand berechnet in der Methode {@link #findSteadyState()}.
-	 * Schließlich werden die initialen Input Events über eine Instanz von
-	 * {@link circuit.EventProvider} erzeugt.
+	 * Im Konstruktor werden zunächst für den Testfall {@code testFall} die
+	 * Files geladen und dann die beiden Member {@link #queue} und
+	 * {@link signal List} intialisiert. Danach werden Instanzen von
+	 * {@link circuit.Circuit} erzeugt. also die Schaltung aus dem circuitFile
+	 * aufgebaut, der stabile Ausgangszustand berechnet in der Methode
+	 * {@link #findSteadyState()}. Schließlich werden die initialen Input Events
+	 * über eine Instanz von {@link circuit.EventProvider} erzeugt.
 	 * 
-	 * @param testFall Der zu simulierende Testfall
+	 * @param testFall
+	 *            Der zu simulierende Testfall
 	 * 
 	 */
 
 	public DateiSimulator(String testFall) throws URISyntaxException {
+
 		Result.clear();
-		beispielName = testFall;
 		String circuitFileName = "circuits/" + testFall + ".cir";
 		int lastIndex = testFall.lastIndexOf("2");
 		String eventTestFall = testFall;
@@ -73,8 +74,10 @@ public class DateiSimulator {
 				.getResource(circuitFileName).toURI());
 		eventFile = new File(getClass().getClassLoader()
 				.getResource(eventFileName).toURI());
-		solutionFile = new File(getClass().getClassLoader()
-				.getResource("solutions/" + testFall + ".erg").toURI());
+		if (output == false) {
+			solutionFile = new File(getClass().getClassLoader()
+					.getResource("solutions/" + testFall + ".erg").toURI());
+		}
 		queue = new EventQueue();
 		Event.setEventQueue(queue);
 		circuit = new Circuit(circuitFile);
@@ -106,10 +109,10 @@ public class DateiSimulator {
 
 	/**
 	 * Gibt den initialen Status der In- und Output Signalen auf System.out aus,
-	 * falls {@link #output()} {@code true} zurück gibt.
+	 * falls {@code true} ist.
 	 */
 	private void outputInitialState() {
-		if (output()) {
+		if (output) {
 			String firstOutputLine = "Zeit \t";
 			for (Signal signal : signalList) {
 				SignalKind kind = Signal.getSignalFromList(signalList,
@@ -136,28 +139,8 @@ public class DateiSimulator {
 		}
 	}
 
-	/**
-	 * @return Wenn die System property {@code OUTPUT} auf {@code true} gesetzt
-	 *         ist, wird {@code true} zurückgegeben, ansonsten {@code false}.
-	 */
-	private static boolean output() {
-		String value = System.getProperty("OUTPUT");
-		if (value != null && value.toLowerCase().equals("true")) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @return Wenn die System property {@code VERIFY} auf {@code true} gesetzt
-	 *         ist, wird {@code true} zurückgegeben, ansonsten {@code false}.
-	 */
-	private static boolean verify() {
-		String value = System.getProperty("VERIFY");
-		if (value != null && value.toLowerCase().equals("false")) {
-			return false;
-		}
-		return true;
+	private static void setOutput(boolean out) {
+		output = out;
 	}
 
 	/**
@@ -179,27 +162,26 @@ public class DateiSimulator {
 		List<String> examples = Arrays.asList("beispiel1o", "beispiel1o2",
 				"beispiel-latch", "beispiel-latch2", "beispiel-flipflop",
 				"beispiel-flipflop2", "_blume", "_blume2");
+		if (args.length == 2 && args[1].toLowerCase().equals("verify")) {
+			setOutput(false);
+		}
 		if (args.length == 0 || args[0].toLowerCase().equals("all")) {
 			for (String testFall : examples) {
-				new DateiSimulator(testFall).run();
+				run(testFall);
 			}
-		} else if (examples.contains(args[0])) {
-			new DateiSimulator(args[0]).run();
 		} else {
-			System.out
-					.println("Eingabeparameter muss entweder 'ALL' oder einer der folgenden Beispiele sein:");
-			System.out.println(examples);
+			run(args[0]);
 		}
 
 	}
 
-	private void run() throws URISyntaxException {
+	private static void run(String beispielName ) throws URISyntaxException {
 
 		DateiSimulator t = new DateiSimulator(beispielName);
 		t.simulate();
 		ArrayList<String[]> solRows = null;
 		int counter = 0;
-		if (verify()) {
+		if (output == false) {
 			solRows = SolutionFile.getSolutionRowsFromFile(solutionFile);
 			org.junit.Assert.assertEquals(
 					"Fehler: unterschiedliche Listgrößen in Testfall "
@@ -208,10 +190,12 @@ public class DateiSimulator {
 		}
 		for (CircuitState solution : Result.results) {
 			String solRow = Integer.toString(solution.getTime());
-			org.junit.Assert.assertEquals(solRow, solRows.get(counter)[0]);
+			if (output == false) {
+				org.junit.Assert.assertEquals(solRow, solRows.get(counter)[0]);
+			}
 			for (int i = 0; i < solution.getStates().size(); i++) {
 				solRow += "\t" + solution.getStates().get(i);
-				if (verify()) {
+				if (output == false) {
 					org.junit.Assert.assertEquals("Fehler in " + (counter + 1)
 							+ ".ten Zeile und " + (i + 1) + ".ten Spalte.",
 							solution.getStates().get(i),
@@ -219,11 +203,11 @@ public class DateiSimulator {
 				}
 			}
 			counter++;
-			if (output()) {
+			if (output == true) {
 				System.out.println(solRow);
 			}
 		}
-		if (verify()) {
+		if (output == false) {
 			System.out.println("Test für Schaltung " + beispielName
 					+ " war erfolgreich :-)");
 		}

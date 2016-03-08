@@ -1,0 +1,199 @@
+##  HEX zu 7-Segment - Dekoder  ##
+
+# 4bit-Zahl -> 1 aus 16 Code
+# 1 aus 16 Code -> BCD
+#
+
+# Eingaenge
+Input z3,z2,z1,z0;
+# negierte
+Signal nz3,nz2,nz1,nz0;
+# 1 aus 16
+Signal sF,sE,sD,sC,sB,sA,s9,s8,s7,s6,s5,s4,s3,s2,s1,s0;
+# BCD
+Output oa,ob,oc,od,oe,of,og;
+
+# Eingaene negieren
+Gate iz3 NOT Delay 2;
+iz3.i1 = z3;
+iz3.o = nz3;
+Gate iz2 NOT Delay 2;
+iz2.i1 = z2;
+iz2.o = nz2;
+Gate iz1 NOT Delay 2;
+iz1.i1 = z1;
+iz1.o = nz1;
+Gate iz0 NOT Delay 2;
+iz0.i1 = z0;
+iz0.o = nz0;
+
+# HEX-Wert in "1 aus 16"-Code umwandeln
+Gate cs0 AND4 Delay 10;
+cs0.i1 = nz3;
+cs0.i2 = nz2;
+cs0.i3 = nz1;
+cs0.i4 = nz0;
+cs0.o = s0;
+Gate cs1 AND4 Delay 10;
+cs1.i1 = nz3;
+cs1.i2 = nz2;
+cs1.i3 = nz1;
+cs1.i4 = z0;
+cs1.o = s1;
+Gate cs2 AND4 Delay 10;
+cs2.i1 = nz3;
+cs2.i2 = nz2;
+cs2.i3 = z1;
+cs2.i4 = nz0;
+cs2.o = s2;
+Gate cs3 AND4 Delay 10;
+cs3.i1 = nz3;
+cs3.i2 = nz2;
+cs3.i3 = z1;
+cs3.i4 = z0;
+cs3.o = s3;
+Gate cs4 AND4 Delay 10;
+cs4.i1 = nz3;
+cs4.i2 = z2;
+cs4.i3 = nz1;
+cs4.i4 = nz0;
+cs4.o = s4;
+Gate cs5 AND4 Delay 10;
+cs5.i1 = nz3;
+cs5.i2 = z2;
+cs5.i3 = nz1;
+cs5.i4 = z0;
+cs5.o = s5;
+Gate cs6 AND4 Delay 10;
+cs6.i1 = nz3;
+cs6.i2 = z2;
+cs6.i3 = z1;
+cs6.i4 = nz0;
+cs6.o = s6;
+Gate cs7 AND4 Delay 10;
+cs7.i1 = nz3;
+cs7.i2 = z2;
+cs7.i3 = z1;
+cs7.i4 = z0;
+cs7.o = s7;
+Gate cs8 AND4 Delay 10;
+cs8.i1 = z3;
+cs8.i2 = nz2;
+cs8.i3 = nz1;
+cs8.i4 = nz0;
+cs8.o = s8;
+Gate cs9 AND4 Delay 10;
+cs9.i1 = z3;
+cs9.i2 = nz2;
+cs9.i3 = nz1;
+cs9.i4 = z0;
+cs9.o = s9;
+Gate csA AND4 Delay 10;
+csA.i1 = z3;
+csA.i2 = nz2;
+csA.i3 = z1;
+csA.i4 = nz0;
+csA.o = sA;
+Gate csB AND4 Delay 10;
+csB.i1 = z3;
+csB.i2 = nz2;
+csB.i3 = z1;
+csB.i4 = z0;
+csB.o = sB;
+Gate csC AND4 Delay 10;
+csC.i1 = z3;
+csC.i2 = z2;
+csC.i3 = nz1;
+csC.i4 = nz0;
+csC.o = sC;
+Gate csD AND4 Delay 10;
+csD.i1 = z3;
+csD.i2 = z2;
+csD.i3 = nz1;
+csD.i4 = z0;
+csD.o = sD;
+Gate csE AND4 Delay 10;
+csE.i1 = z3;
+csE.i2 = z2;
+csE.i3 = z1;
+csE.i4 = nz0;
+csE.o = sE;
+Gate csF AND4 Delay 10;
+csF.i1 = z3;
+csF.i2 = z2;
+csF.i3 = z1;
+csF.i4 = z0;
+csF.o = sF;
+
+# Segment-Signalleitungen ansteuern
+Gate ca NOR4 Delay 10;
+ca.i1 = s1;
+ca.i2 = s4;
+ca.i3 = sB;
+ca.i4 = sD;
+ca.o = oa;
+
+Gate cb1 OR4 Delay 10;
+Gate cb2 NOR3 Delay 10;
+Signal _cb;
+cb1.o = _cb;
+cb2.i1 = _cb;
+cb1.i1 = s5;
+cb1.i2 = s6;
+cb1.i3 = sB;
+cb1.i4 = sC;
+cb2.i2 = sE;
+cb2.i3 = sF;
+cb2.o = ob;
+
+Gate cc NOR4 Delay 10;
+cc.i1 = s2;
+cc.i2 = sC;
+cc.i3 = sE;
+cc.i4 = sF;
+cc.o = oc;
+
+Gate cd1 OR4 Delay 10;
+Gate cd2 NOR2 Delay 10;
+Signal _cd;
+cd1.o = _cd;
+cd2.i1 = _cd;
+cd1.i1 = s1;
+cd1.i2 = s4;
+cd1.i3 = s7;
+cd1.i4 = sA;
+cd2.i2 = sF;
+cd2.o = od;
+
+Gate ce1 OR4 Delay 10;
+Gate ce2 NOR3 Delay 10;
+Signal _ce;
+ce1.o = _ce;
+ce2.i1 = _ce;
+ce1.i1 = s1;
+ce1.i2 = s3;
+ce1.i3 = s4;
+ce1.i4 = s5;
+ce2.i2 = s7;
+ce2.i3 = s9;
+ce2.o = oe;
+
+Gate cf1 OR4 Delay 10;
+Gate cf2 NOR2 Delay 10;
+Signal _cf;
+cf1.o = _cf;
+cf2.i1 = _cf;
+cf1.i1 = s1;
+cf1.i2 = s2;
+cf1.i3 = s3;
+cf1.i4 = s7;
+cf2.i2 = sD;
+cf2.o = of;
+
+Gate cg NOR4 Delay 10;
+cg.i1 = s0;
+cg.i2 = s1;
+cg.i3 = s7;
+cg.i4 = sC;
+cg.o = og;
+

@@ -1,0 +1,128 @@
+Input sig;
+Input clk;
+
+Signal p7, p6, p5, p4, p3, p2, p1, p0;
+Output c7, c6, c5, c4, c3, c2, c1, c0;
+Output ix7,ix6,ix5,ix4,ix3,ix2,ix1,ix0;
+
+#
+Signal ie0;
+Gate e0 AND2 Delay 4;
+e0.i1=p0;
+e0.i2=c7;
+e0.o=ie0;
+Gate m0 FF Delay 8;
+m0.d=sig;
+m0.c=clk;
+m0.q=c0;
+Gate x0 EXOR2 Delay 8;
+x0.i1=ie0;
+x0.i2=c0;
+x0.o=ix0;
+#
+#
+Signal ie1;
+Gate e1 AND2 Delay 4;
+e1.i1=p1;
+e1.i2=c7;
+e1.o=ie1;
+Gate m1 FF Delay 8;
+m1.d=ix0;
+m1.c=clk;
+m1.q=c1;
+Gate x1 EXOR2 Delay 8;
+x1.i1=ie1;
+x1.i2=c1;
+x1.o=ix1;
+#
+#
+Signal ie2;
+Gate e2 AND2 Delay 4;
+e2.i1=p2;
+e2.i2=c7;
+e2.o=ie2;
+Gate m2 FF Delay 8;
+m2.d=ix1;
+m2.c=clk;
+m2.q=c2;
+Gate x2 EXOR2 Delay 8;
+x2.i1=ie2;
+x2.i2=c2;
+x2.o=ix2;
+#
+#
+Signal ie3;
+Gate e3 AND2 Delay 4;
+e3.i1=p3;
+e3.i2=c7;
+e3.o=ie3;
+Gate m3 FF Delay 8;
+m3.d=ix2;
+m3.c=clk;
+m3.q=c3;
+Gate x3 EXOR2 Delay 8;
+x3.i1=ie3;
+x3.i2=c3;
+x3.o=ix3;
+#
+#
+Signal ie4;
+Gate e4 AND2 Delay 4;
+e4.i1=p4;
+e4.i2=c7;
+e4.o=ie4;
+Gate m4 FF Delay 8;
+m4.d=ix3;
+m4.c=clk;
+m4.q=c4;
+Gate x4 EXOR2 Delay 8;
+x4.i1=ie4;
+x4.i2=c4;
+x4.o=ix4;
+#
+#
+Signal ie5;
+Gate e5 AND2 Delay 4;
+e5.i1=p5;
+e5.i2=c7;
+e5.o=ie5;
+Gate m5 FF Delay 8;
+m5.d=ix4;
+m5.c=clk;
+m5.q=c5;
+Gate x5 EXOR2 Delay 8;
+x5.i1=ie5;
+x5.i2=c5;
+x5.o=ix5;
+#
+#
+Signal ie6;
+Gate e6 AND2 Delay 4;
+e6.i1=p6;
+e6.i2=c7;
+e6.o=ie6;
+Gate m6 FF Delay 8;
+m6.d=ix5;
+m6.c=clk;
+m6.q=c6;
+Gate x6 EXOR2 Delay 8;
+x6.i1=ie6;
+x6.i2=c6;
+x6.o=ix6;
+#
+#
+Signal ie7;
+Gate e7 AND2 Delay 4;
+e7.i1=p7;
+e7.i2=c7;
+e7.o=ie7;
+Gate m7 FF Delay 8;
+m7.d=ix6;
+m7.c=clk;
+m7.q=c7;
+Gate x7 EXOR2 Delay 8;
+x7.i1=ie7;
+x7.i2=c7;
+x7.o=ix7;
+#
+

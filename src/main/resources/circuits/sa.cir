@@ -1,0 +1,114 @@
+# Realisiert wird ein Serieller Addierer
+# Zur Addition zweier 4Bit Zahlen
+
+# Eingaenge der Schaltung
+Input a3,a2,a1,a0,b3,b2,b1,b0,c;
+
+# Ausgaenge der Schaltung
+Output s4,s3,s2,s1,s0;
+
+# Signale, die nur innerhalb der Schaltung verwendet werden
+Signal i1,i2,i3,i4,i5,i6,i7,i8;
+
+Gate ff0 FF Delay 5;
+Gate ff1 FF Delay 5;
+Gate ff2 FF Delay 5;
+Gate ff3 FF Delay 5;
+Gate ff4 FF Delay 5;
+Gate ff5 FF Delay 5;
+Gate ff6 FF Delay 5;
+Gate ff7 FF Delay 5;
+
+Gate ff8 FF Delay 5;
+
+Gate ff9 EXOR2 Delay 7;
+Gate ff10 AND2 Delay 10;
+Gate ff11 EXOR2 Delay 7;
+Gate ff12 AND2 Delay 10;
+Gate ff13 OR2 Delay 8;
+
+Gate ff14 FF Delay 5;
+Gate ff15 FF Delay 5;
+Gate ff16 FF Delay 5;
+Gate ff17 FF Delay 5;
+Gate ff18 FF Delay 5;
+
+
+ff0.d = a3;
+ff0.c = c;
+ff0.q = a2;
+
+ff1.d = a2;
+ff1.c = c;
+ff1.q = a1;
+
+ff2.d = a1;
+ff2.c = c;
+ff2.q = a0;
+
+ff3.d = a0;
+ff3.c = c;
+ff3.q = i1;
+
+ff4.d = b3;
+ff4.c = c;
+ff4.q = b2;
+
+ff5.d = b2;
+ff5.c = c;
+ff5.q = b1;
+
+ff6.d = b1;
+ff6.c = c;
+ff6.q = b0;
+
+ff7.d = b0;
+ff7.c = c;
+ff7.q = i2;
+
+ff8.d = i7;
+ff8.c = c;
+ff8.q = i3;
+
+ff9.i1 = i2;
+ff9.i2 = i3;
+ff9.o = i4;
+
+ff10.i1 = i2;
+ff10.i2 = i3;
+ff10.o = i5;
+
+ff11.i1 = i1;
+ff11.i2 = i4;
+ff11.o = i8;
+
+ff12.i1 = i1;
+ff12.i2 = i4;
+ff12.o = i6;
+
+ff13.i1 = i6;
+ff13.i2 = i5;
+ff13.o = i7;
+
+ff14.d = i8;
+ff14.c = c;
+ff14.q = s4;
+
+ff15.d = s4;
+ff15.c = c;
+ff15.q = s3;
+
+ff16.d = s3;
+ff16.c = c;
+ff16.q = s2;
+
+ff17.d = s2;
+ff17.c = c;
+ff17.q = s1;
+
+ff18.d = s1;
+ff18.c = c;
+ff18.q = s0;
+
+
+

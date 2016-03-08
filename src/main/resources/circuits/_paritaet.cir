@@ -1,0 +1,93 @@
+# Kommentarzeilen beginnen mit einem #-Symbol, Leerzeilen werden ignoriert
+
+# Eingaenge der Schaltung
+Input a,b,c,d,e,f,g,h,odd,even;
+
+# Ausgaenge der Schaltung
+Output s_even,s_odd;
+
+# Signale, die nur innerhalb der Schaltung verwendet werden
+Signal i1, i2, i3, i4, i5, i6;
+Signal i7, i8, i9, i10,i11,i12;
+
+# Verwendet Gatter und deren Verschaltung
+Gate g1  EXOR2 Delay 8;
+Gate g2  EXOR2 Delay 8;
+Gate g3  EXOR2 Delay 8;
+Gate g4  EXOR2 Delay 8;
+Gate g5  EXOR2 Delay 8;
+Gate g6  EXOR2 Delay 8;
+Gate g7  EXOR2 Delay 8;
+Gate g8  NOT   Delay 3;
+Gate g9  NAND2 Delay 4;
+Gate g10 NAND2 Delay 4;
+Gate g11 NAND2 Delay 4;
+Gate g12 NAND2 Delay 4;
+Gate g13 AND2  Delay 5;
+Gate g14 AND2  Delay 5;
+
+
+g1.i1 = a;
+g1.i2 = b;
+g1.o  = i1;
+
+g2.i1 = c;
+g2.i2 = d;
+g2.o  = i2;
+
+g3.i1 = i1;
+g3.i2 = i2;
+g3.o  = i3;
+
+g4.i1 = e;
+g4.i2 = f;
+g4.o  = i4;
+
+g5.i1 = g;
+g5.i2 = h;
+g5.o  = i5;
+
+g6.i1 = i4;
+g6.i2 = i5;
+g6.o  = i6;
+
+
+g7.i1 = i3;
+g7.i2 = i6;
+g7.o  = i7;
+
+g8.i1 = i7;
+g8.o  = i8;
+
+# Ende der Paritaetsbildung fuer die Signale (a bis h)
+# Ungerade an i7 und gerade an i8
+
+g9.i1 = i7;
+g9.i2 = odd;
+g9.o  = i9;
+
+g10.i1 = i8;
+g10.i2 = even;
+g10.o  = i10;
+
+g11.i1 = even;
+g11.i2 = i7;
+g11.o  = i11;
+
+g12.i1 = i8;
+g12.i2 = odd;
+g12.o  = i12;
+
+# Ausgang S_EVEN
+
+g13.i1 = i9;
+g13.i2 = i10;
+g13.o  = s_even;
+
+# Ausgang S_ODD
+
+g14.i1 = i11;
+g14.i2 = i12;
+g14.o  = s_odd;
+
+# Ende Paritaetsgenerator / Paritaetspruefer

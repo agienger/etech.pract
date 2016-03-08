@@ -1,0 +1,51 @@
+# Kommentarzeilen werden genau wie in der Schaltungsbeschreibung angegeben
+# Danach folgt eine einfache Liste von Events
+# Sie koennen davon ausgehen, dass diese Events sortiert sind
+# Leerzeilen sollen einfach überlesen werden
+# Das Format einer Zeile ist dabei immer <Zeitpunkt> <Signalname> <Wert>
+
+0 a 0
+0 b 0 
+0 c 0
+0 d 0
+0 e 0
+0 f 0
+0 g 0
+0 h 0
+0 odd 0
+0 even 0
+# Nach  9 Zeitschritten s_odd = 1 und s_even = 1
+
+40 a 1
+# Keine Veraenderung der Ausgaenge
+
+80 b 1
+# Keine Veraenderung der Ausgaenge
+
+120 odd 1
+# Nach  9 Zeitschritten s_odd = 0 und s_even = 1
+
+160 c 1
+# Nach 36 Zeitschritten s_odd = 1 und s_even = 0
+
+200 d 1
+# Nach 36 Zeitschritten s_odd = 0 und s_even = 1
+
+240 odd 0
+240 even 1
+# Nach  9 Zeitschritten s_odd = 1 und s_even = 0
+
+280 e 1
+# Nach 36 Zeitschritten s_odd = 0 und s_even = 1
+
+320 f 1
+# Nach 36 Zeitschritten s_odd = 1 und s_even = 0
+
+360 odd 1
+# Nach  9 Zeitschritten s_odd = 0 und s_even = 0
+
+400 g 1
+# Keine Veraenderung der Ausgaenge
+
+440 h 1
+# Keine Veraenderung der Ausgaenge

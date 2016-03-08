@@ -1,0 +1,276 @@
+#  4-Bit Additions/Subtraktions-Rechenwerk mit 4Bit Ergebnisregister
+
+# Operanten
+Input a3,a2,a1,a0;
+Input b3,b2,b1,b0;
+
+#Steuereingang (1-Subtraktion (a-b), 0-Addition (a+b))
+Input s;
+
+#Taktsignal des Ergebnisregisters
+Input c;
+
+#Ausgang des Rechenwerks
+Output e4,e3,e2,e1,e0;
+
+#Registerausgang
+Output re3,re2,re1,re0;
+
+# Interne Signale
+Signal i1,i2,i3,i4;
+Signal i5,i6,i7,i8;
+
+Signal i11,i12,i13,i14;
+Signal i21,i22,i23,i24;
+Signal i31,i32,i33,i34;
+Signal i41,i42,i43,i44;
+
+Signal i51,i52,i53;
+Signal i61,i62,i63;
+Signal i71,i72,i73;
+Signal i81,i82,i83;
+
+#überträge der Volladdierer
+Signal u1,u2,u3;
+
+
+# Verwendete Gatter und FF
+
+Gate g1  NOT   Delay 2;
+Gate g2  NOT   Delay 2;
+Gate g3  NOT   Delay 2;
+Gate g4  NOT   Delay 2;
+
+
+# MUX 1x
+Gate g11 BUF   Delay 2;
+Gate g12 NOT   Delay 2;
+Gate g13 AND2  Delay 4;
+Gate g14 AND2  Delay 4;
+Gate g15 OR2   Delay 4;
+
+# MUX 2x
+Gate g21 BUF   Delay 2;
+Gate g22 NOT   Delay 2;
+Gate g23 AND2  Delay 4;
+Gate g24 AND2  Delay 4;
+Gate g25 OR2   Delay 4;
+
+# MUX 3x
+Gate g31 BUF   Delay 2;
+Gate g32 NOT   Delay 2;
+Gate g33 AND2  Delay 4;
+Gate g34 AND2  Delay 4;
+Gate g35 OR2   Delay 4;
+
+# MUX 4x
+Gate g41 BUF   Delay 2;
+Gate g42 NOT   Delay 2;
+Gate g43 AND2  Delay 4;
+Gate g44 AND2  Delay 4;
+Gate g45 OR2   Delay 4;
+
+
+# VADD 5x
+Gate g51 EXOR2 Delay 8;
+Gate g52 AND2  Delay 4;
+
+Gate g53 EXOR2 Delay 8;
+Gate g54 AND2  Delay 4;
+
+Gate g55 OR2   Delay 4;
+
+# VADD 6x
+Gate g61 EXOR2 Delay 8;
+Gate g62 AND2  Delay 4;
+
+Gate g63 EXOR2 Delay 8;
+Gate g64 AND2  Delay 4;
+
+Gate g65 OR2   Delay 4;
+
+# VADD 7x
+Gate g71 EXOR2 Delay 8;
+Gate g72 AND2  Delay 4;
+
+Gate g73 EXOR2 Delay 8;
+Gate g74 AND2  Delay 4;
+
+Gate g75 OR2   Delay 4;
+
+# VADD 8x
+Gate g81 EXOR2 Delay 8;
+Gate g82 AND2  Delay 4;
+
+Gate g83 EXOR2 Delay 8;
+Gate g84 AND2  Delay 4;
+
+Gate g85 OR2   Delay 4;
+
+
+# 4 Bit Register für das Ergebnis
+
+Gate g90 FF    Delay 8;
+Gate g91 FF    Delay 8;
+Gate g92 FF    Delay 8;
+Gate g93 FF    Delay 8;
+
+# Verschaltung aller Gatter
+# Negatore für Operand B
+g1.i1  = b0;
+g1.o   = i1;
+
+g2.i1  = b1;
+g2.o   = i2;
+
+g3.i1  = b2;
+g3.o   = i3;
+
+g4.i1  = b3;
+g4.o   = i4;
+
+# MUX 1x
+g11.i1 = s;
+g11.o  = i11;
+g12.i1 = s;
+g12.o  = i12;
+g13.i1 = i1;
+g13.i2 = i11;
+g13.o  = i13;
+g14.i1 = i12;
+g14.i2 = b0;
+g14.o  = i14;
+g15.i1 = i13;
+g15.i2 = i14;
+g15.o  = i5;
+
+# MUX 2x
+g21.i1 = s;
+g21.o  = i21;
+g22.i1 = s;
+g22.o  = i22;
+g23.i1 = i2;
+g23.i2 = i21;
+g23.o  = i23;
+g24.i1 = i22;
+g24.i2 = b1;
+g24.o  = i24;
+g25.i1 = i23;
+g25.i2 = i24;
+g25.o  = i6;
+
+# MUX 3x
+g31.i1 = s;
+g31.o  = i31;
+g32.i1 = s;
+g32.o  = i32;
+g33.i1 = i3;
+g33.i2 = i31;
+g33.o  = i33;
+g34.i1 = i32;
+g34.i2 = b2;
+g34.o  = i34;
+g35.i1 = i33;
+g35.i2 = i34;
+g35.o  = i7;
+
+# MUX 4x
+g41.i1 = s;
+g41.o  = i41;
+g42.i1 = s;
+g42.o  = i42;
+g43.i1 = i4;
+g43.i2 = i41;
+g43.o  = i43;
+g44.i1 = i42;
+g44.i2 = b3;
+g44.o  = i44;
+g45.i1 = i43;
+g45.i2 = i44;
+g45.o  = i8;
+
+# VADD 5x
+g51.i1 = a0;
+g51.i2 = i5;
+g51.o  = i51;
+g52.i1 = a0;
+g52.i2 = i5;
+g52.o  = i52;
+g53.i1 = i51;
+g53.i2 = s;
+g53.o  = e0;
+g54.i1 = i51;
+g54.i2 = s;
+g54.o  = i53;
+g55.i1 = i52;
+g55.i2 = i53;
+g55.o  = u1;
+
+# VADD 6x
+g61.i1 = a1;
+g61.i2 = i6;
+g61.o  = i61;
+g62.i1 = a1;
+g62.i2 = i6;
+g62.o  = i62;
+g63.i1 = i61;
+g63.i2 = u1;
+g63.o  = e1;
+g64.i1 = i61;
+g64.i2 = u1;
+g64.o  = i63;
+g65.i1 = i62;
+g65.i2 = i63;
+g65.o  = u2;
+
+# VADD 7x
+g71.i1 = a2;
+g71.i2 = i7;
+g71.o  = i71;
+g72.i1 = a2;
+g72.i2 = i7;
+g72.o  = i72;
+g73.i1 = i71;
+g73.i2 = u2;
+g73.o  = e2;
+g74.i1 = i71;
+g74.i2 = u2;
+g74.o  = i73;
+g75.i1 = i72;
+g75.i2 = i73;
+g75.o  = u3;
+
+# VADD 8x
+g81.i1 = a3;
+g81.i2 = i8;
+g81.o  = i81;
+g82.i1 = a3;
+g82.i2 = i8;
+g82.o  = i82;
+g83.i1 = i81;
+g83.i2 = u3;
+g83.o  = e3;
+g84.i1 = i81;
+g84.i2 = u3;
+g84.o  = i83;
+g85.i1 = i82;
+g85.i2 = i83;
+g85.o  = e4;
+
+# Register
+g90.c  = c;
+g90.d  = e0;
+g90.q  = re0;
+
+g91.c  = c;
+g91.d  = e1;
+g91.q  = re1;
+
+g92.c  = c;
+g92.d  = e2;
+g92.q  = re2;
+
+g93.c  = c;
+g93.d  = e3;
+g93.q  = re3;
+

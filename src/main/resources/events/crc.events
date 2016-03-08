@@ -1,0 +1,56 @@
+# Polynom
+0 p7 0
+0 p6 0
+0 p5 1
+0 p4 0
+0 p3 0
+0 p2 1
+0 p1 1
+0 p0 1
+
+# Signal
+# Da FF mit 0->1 flanke die Daten uebernimmt
+# immer zur 1->0 flanke die Daten aendern.
+
+0000 sig 0
+0010 sig 1
+0110 sig 0
+0210 sig 1
+0310 sig 1
+0410 sig 1
+0510 sig 0
+0610 sig 0
+0710 sig 1
+0810 sig 1
+0910 sig 1
+1010 sig 0
+1110 sig 1
+
+# Clock
+0000 clk 1
+0010 clk 0
+0100 clk 1
+0110 clk 0
+0200 clk 1
+0210 clk 0
+0300 clk 1
+0310 clk 0
+0400 clk 1
+0410 clk 0
+0500 clk 1
+0510 clk 0
+0600 clk 1
+0610 clk 0
+0700 clk 1
+0710 clk 0
+0800 clk 1
+0810 clk 0
+0900 clk 1
+0910 clk 0
+1000 clk 1
+1010 clk 0
+1100 clk 1
+1110 clk 0
+1200 clk 1
+1210 clk 0
+

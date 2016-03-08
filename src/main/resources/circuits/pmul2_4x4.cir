@@ -1,0 +1,350 @@
+# Parallelmultiplizierer fuer 4 Bit
+# Gatter Zeiten wie bei SN74LSxx
+# EXOR  SN74LS86  10ns     http://focus.ti.com/lit/ds/symlink/sn7486.pdf
+# OR    SN74LS32  14ns     http://focus.ti.com/lit/ds/symlink/sn7432.pdf
+# AND   SN74LS08   9ns     http://focus.ti.com/lit/ds/symlink/sn7408.pdf
+
+Input  a0,a1,a2,a3;
+Input  b0,b1,b2,b3;
+Output p0,p1,p2,p3,p4,p5,p6,p7;
+
+# ADDER Zeile 1
+Signal i12,  i13,  i14;
+Signal i21,  i22,  i23,  i24;
+Signal u10,  u11,  u12,  u13;
+Signal s11,  s12,  s13;
+Signal fi111,fi112,fi113;
+Signal fi121,fi122,fi123;
+
+# ADDER Zeile 2
+Signal i31,  i32,  i33,  i34;
+Signal u20,  u21,  u22,  u23;
+Signal s21,  s22,  s23;
+Signal fi211,fi212,fi213;
+Signal fi221,fi222,fi223;
+Signal fi231,fi232,fi233;
+
+# ADDER Zeile 3
+Signal i41,  i42,  i43,  i44;
+Signal u30,  u31,  u32;
+Signal fi311,fi312,fi313;
+Signal fi321,fi322,fi323;
+Signal fi331,fi332,fi333;
+
+# Auflistung aller Gatter die in
+# der Schaltung eingesetzt sind.
+
+# AND2 Zeile 1
+Gate a11    AND2  Delay  9;
+Gate a12    AND2  Delay  9;
+Gate a13    AND2  Delay  9;
+Gate a14    AND2  Delay  9;
+
+# AND2 Zeile 2
+Gate a21    AND2  Delay  9;
+Gate a22    AND2  Delay  9;
+Gate a23    AND2  Delay  9;
+Gate a24    AND2  Delay  9;
+
+# AND2 Zeile 3
+Gate a31    AND2  Delay  9;
+Gate a32    AND2  Delay  9;
+Gate a33    AND2  Delay  9;
+Gate a34    AND2  Delay  9;
+
+# AND2 Zeile 4
+Gate a41    AND2  Delay  9;
+Gate a42    AND2  Delay  9;
+Gate a43    AND2  Delay  9;
+Gate a44    AND2  Delay  9;
+
+# Gatter der Halbaddierer 1 bis 3
+Gate ha1a   AND2  Delay  9;
+Gate ha1e   EXOR2 Delay 10;
+Gate ha2a   AND2  Delay  9;
+Gate ha2e   EXOR2 Delay 10;
+Gate ha3a   AND2  Delay  9;
+Gate ha3e   EXOR2 Delay 10;
+
+# Zeile 1
+Gate fa11a1 AND2  Delay  9;
+Gate fa11e1 EXOR2 Delay 10;
+Gate fa11a2 AND2  Delay  9;
+Gate fa11e2 EXOR2 Delay 10;
+Gate fa11o  OR2   Delay 14;
+
+Gate fa12a1 AND2  Delay  9;
+Gate fa12e1 EXOR2 Delay 10;
+Gate fa12a2 AND2  Delay  9;
+Gate fa12e2 EXOR2 Delay 10;
+Gate fa12o  OR2   Delay 14;
+
+Gate ha4a   AND2  Delay  9;
+Gate ha4e   EXOR2 Delay 10;
+
+# Zeile 2
+Gate fa21a1 AND2  Delay  9;
+Gate fa21e1 EXOR2 Delay 10;
+Gate fa21a2 AND2  Delay  9;
+Gate fa21e2 EXOR2 Delay 10;
+Gate fa21o  OR2   Delay 14;
+
+Gate fa22a1 AND2  Delay  9;
+Gate fa22e1 EXOR2 Delay 10;
+Gate fa22a2 AND2  Delay  9;
+Gate fa22e2 EXOR2 Delay 10;
+Gate fa22o  OR2   Delay 14;
+
+Gate fa23a1 AND2  Delay  9;
+Gate fa23e1 EXOR2 Delay 10;
+Gate fa23a2 AND2  Delay  9;
+Gate fa23e2 EXOR2 Delay 10;
+Gate fa23o  OR2   Delay 14;
+
+# Zeile 3
+Gate fa31a1 AND2  Delay  9;
+Gate fa31e1 EXOR2 Delay 10;
+Gate fa31a2 AND2  Delay  9;
+Gate fa31e2 EXOR2 Delay 10;
+Gate fa31o  OR2   Delay 14;
+
+Gate fa32a1 AND2  Delay  9;
+Gate fa32e1 EXOR2 Delay 10;
+Gate fa32a2 AND2  Delay  9;
+Gate fa32e2 EXOR2 Delay 10;
+Gate fa32o  OR2   Delay 14;
+
+Gate fa33a1 AND2  Delay  9;
+Gate fa33e1 EXOR2 Delay 10;
+Gate fa33a2 AND2  Delay  9;
+Gate fa33e2 EXOR2 Delay 10;
+Gate fa33o  OR2   Delay 14;
+
+
+# AND2 Verknüpfungen Zeile 1
+a11.i1    = a0;
+a11.i2    = b0;
+a11.o     = p0;
+
+a12.i1    = a0;
+a12.i2    = b1;
+a12.o     = i12;
+
+a13.i1    = a0;
+a13.i2    = b2;
+a13.o     = i13;
+
+a14.i1    = a0;
+a14.i2    = b3;
+a14.o     = i14;
+
+
+# AND2 Verknüpfungen Zeile 2
+a21.i1    = a1;
+a21.i2    = b0;
+a21.o     = i21;
+
+a22.i1    = a1;
+a22.i2    = b1;
+a22.o     = i22;
+
+a23.i1    = a1;
+a23.i2    = b2;
+a23.o     = i23;
+
+a24.i1    = a1;
+a24.i2    = b3;
+a24.o     = i24;
+
+# ADDER Zeile 1
+ha1a.i1   = i12;
+ha1e.i1   = i12;
+ha1a.i2   = i21;
+ha1e.i2   = i21;
+ha1e.o    = p1;
+ha1a.o    = u10;
+
+fa11a1.i1 = i13;
+fa11e1.i1 = i13;
+fa11a1.i2 = i22;
+fa11e1.i2 = i22;
+fa11a1.o  = fi111;
+fa11e1.o  = fi112;
+fa11a2.i1 = u10;
+fa11e2.i1 = u10;
+fa11a2.i2 = fi112;
+fa11e2.i2 = fi112;
+fa11a2.o  = fi113;
+fa11e2.o  = s11;
+fa11o.i1  = fi111;
+fa11o.i2  = fi113;
+fa11o.o   = u11;
+
+fa12a1.i1 = i14;
+fa12e1.i1 = i14;
+fa12a1.i2 = i23;
+fa12e1.i2 = i23;
+fa12a1.o  = fi121;
+fa12e1.o  = fi122;
+fa12a2.i1 = u11;
+fa12e2.i1 = u11;
+fa12a2.i2 = fi122;
+fa12e2.i2 = fi122;
+fa12a2.o  = fi123;
+fa12e2.o  = s12;
+fa12o.i1  = fi121;
+fa12o.i2  = fi123;
+fa12o.o   = u12;
+
+ha4a.i1   = u12;
+ha4e.i1   = u12;
+ha4a.i2   = i24;
+ha4e.i2   = i24;
+ha4a.o    = u13;
+ha4e.o    = s13;
+
+# AND2 Verknüpfungen Zeile 3
+a31.i1    = a2;
+a31.i2    = b0;
+a31.o     = i31;
+
+a32.i1    = a2;
+a32.i2    = b1;
+a32.o     = i32;
+
+a33.i1    = a2;
+a33.i2    = b2;
+a33.o     = i33;
+
+a34.i1    = a2;
+a34.i2    = b3;
+a34.o     = i34;
+
+# ADDER Zeile 2
+ha2a.i1   = s11;
+ha2e.i1   = s11;
+ha2a.i2   = i31;
+ha2e.i2   = i31;
+ha2e.o    = p2;
+ha2a.o    = u20;
+
+fa21a1.i1 = s12;
+fa21e1.i1 = s12;
+fa21a1.i2 = i32;
+fa21e1.i2 = i32;
+fa21a1.o  = fi211;
+fa21e1.o  = fi212;
+fa21a2.i1 = u20;
+fa21e2.i1 = u20;
+fa21a2.i2 = fi212;
+fa21e2.i2 = fi212;
+fa21a2.o  = fi213;
+fa21e2.o  = s21;
+fa21o.i1  = fi211;
+fa21o.i2  = fi213;
+fa21o.o   = u21;
+
+fa22a1.i1 = s13;
+fa22e1.i1 = s13;
+fa22a1.i2 = i33;
+fa22e1.i2 = i33;
+fa22a1.o  = fi221;
+fa22e1.o  = fi222;
+fa22a2.i1 = u21;
+fa22e2.i1 = u21;
+fa22a2.i2 = fi222;
+fa22e2.i2 = fi222;
+fa22a2.o  = fi223;
+fa22e2.o  = s22;
+fa22o.i1  = fi221;
+fa22o.i2  = fi223;
+fa22o.o   = u22;
+
+fa23a1.i1 = u13;
+fa23e1.i1 = u13;
+fa23a1.i2 = i34;
+fa23e1.i2 = i34;
+fa23a1.o  = fi231;
+fa23e1.o  = fi232;
+fa23a2.i1 = u22;
+fa23e2.i1 = u22;
+fa23a2.i2 = fi232;
+fa23e2.i2 = fi232;
+fa23a2.o  = fi233;
+fa23e2.o  = s23;
+fa23o.i1  = fi231;
+fa23o.i2  = fi233;
+fa23o.o   = u23;
+
+# AND2 Verknüpfungen Zeile 4
+a41.i1    = a3;
+a41.i2    = b0;
+a41.o     = i41;
+
+a42.i1    = a3;
+a42.i2    = b1;
+a42.o     = i42;
+
+a43.i1    = a3;
+a43.i2    = b2;
+a43.o     = i43;
+
+a44.i1    = a3;
+a44.i2    = b3;
+a44.o     = i44;
+
+# ADDER Zeile 3
+ha3a.i1   = s21;
+ha3e.i1   = s21;
+ha3a.i2   = i41;
+ha3e.i2   = i41;
+ha3e.o    = p3;
+ha3a.o    = u30;
+
+fa31a1.i1 = s22;
+fa31e1.i1 = s22;
+fa31a1.i2 = i42;
+fa31e1.i2 = i42;
+fa31a1.o  = fi311;
+fa31e1.o  = fi312;
+fa31a2.i1 = u30;
+fa31e2.i1 = u30;
+fa31a2.i2 = fi312;
+fa31e2.i2 = fi312;
+fa31a2.o  = fi313;
+fa31e2.o  = p4;
+fa31o.i1  = fi311;
+fa31o.i2  = fi313;
+fa31o.o   = u31;
+
+fa32a1.i1 = s23;
+fa32e1.i1 = s23;
+fa32a1.i2 = i43;
+fa32e1.i2 = i43;
+fa32a1.o  = fi321;
+fa32e1.o  = fi322;
+fa32a2.i1 = u31;
+fa32e2.i1 = u31;
+fa32a2.i2 = fi322;
+fa32e2.i2 = fi322;
+fa32a2.o  = fi323;
+fa32e2.o  = p5;
+fa32o.i1  = fi321;
+fa32o.i2  = fi323;
+fa32o.o   = u32;
+
+fa33a1.i1 = u23;
+fa33e1.i1 = u23;
+fa33a1.i2 = i44;
+fa33e1.i2 = i44;
+fa33a1.o  = fi331;
+fa33e1.o  = fi332;
+fa33a2.i1 = u32;
+fa33e2.i1 = u32;
+fa33a2.i2 = fi332;
+fa33e2.i2 = fi332;
+fa33a2.o  = fi333;
+fa33e2.o  = p6;
+fa33o.i1  = fi331;
+fa33o.i2  = fi333;
+fa33o.o   = p7;
